@@ -7,9 +7,25 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Chess Game</h1>
-        <div id="chessboard"></div>
+    <div class="app-container">
+        <div class="left-pane">
+            <h2>Info Panel</h2>
+            <div id="left-panel-content"></div>
+        </div>
+        
+        <div class="center-pane">
+            <h1>Chess Game</h1>
+            <div class="board-container">
+                <div class="notation-row" id="row-notation"></div>
+                <div class="notation-col" id="col-notation"></div>
+                <div id="chessboard"></div>
+            </div>
+        </div>
+        
+        <div class="right-pane">
+            <h2>Game History</h2>
+            <div id="right-panel-content"></div>
+        </div>
     </div>
     
     <script src="js/chess.js"></script>

@@ -1,41 +1,58 @@
 # Chess Game
 
-A simple browser-based chess game that allows you to move chess pieces on a standard chess board.
+A feature-rich browser-based chess game with standard rules and visual aids.
 
-## Features
+## Key Features
 
-- Displays a standard 8x8 chess board
-- Shows all chess pieces in the standard starting configuration
-- Allows players to move pieces by clicking on them and then clicking on the destination square
-- Simple piece capture logic
+### Core Gameplay
+- Complete chess rules implementation with proper move validation
+- Standard 8×8 board with algebraic notation (a-h, 1-8)
+- Turn-based gameplay alternating between white and black
+- All standard chess piece movements and captures
 
-## How to Run
+### Visual Enhancements
+- Piece selection with highlighted legal moves
+- Threat index indicators showing how many pieces threaten each square
+  - Blue indicators (bottom-left) show white piece threats
+  - Red indicators (top-right) show black piece threats
+- Visual distinction between source and destination squares
+- Clear board layout with traditional coloring
 
-1. Clone or download this repository
-2. Open the `index.html` file in any modern web browser
-3. Start playing by clicking on a piece and then clicking where you want to move it
+### Special Moves
+- Castling (both kingside and queenside)
+- Pawn double-move from starting position
+- Capture moves
 
-## Implementation Details
+### User Interface
+- Three-pane layout design:
+  - Left panel: Game information and rules
+  - Center panel: Chess board with notations
+  - Right panel: Move history in standard notation
+- Responsive design adapting to different screen sizes
 
-This chess game is implemented using:
-- HTML for structure
-- CSS for styling the board and pieces
-- JavaScript for game logic and interactivity
+### Move History
+- Maintains complete game record in standard algebraic notation
+- Includes move numbers, piece symbols, and capture notation
+- Special notation for castling moves (O-O and O-O-O)
 
-The game uses Unicode chess symbols to display the pieces, so no image files are required.
+### Technical Implementation
+- Pure JavaScript with no external dependencies
+- Standard web technologies (HTML, CSS, JavaScript)
+- Efficient board representation and move calculation
+- Runs locally in any modern browser
 
-## Current Limitations
-
-- No enforcement of chess rules (any piece can move anywhere)
-- No turn-based play enforcement (both white and black pieces can be moved at any time)
-- No check/checkmate detection
-- No special moves like castling, en passant, or pawn promotion
+## How to Play
+1. White moves first
+2. Click on a piece to see all valid moves (highlighted in green)
+3. Click on a highlighted square to move the selected piece
+4. Captured pieces are automatically removed
+5. The move is recorded in the history panel
+6. Play alternates between white and black
 
 ## Future Enhancements
-
-Future versions could include:
-- Implementation of all chess rules
-- Turn-based gameplay
 - Check and checkmate detection
-- Game history and move notation
-- Timer functionality for timed games 
+- Stalemate and draw conditions
+- En passant captures
+- Pawn promotion
+- Game timer functionality
+- Save/load game capability 
