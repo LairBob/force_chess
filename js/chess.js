@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeBoard();
     addBoardNotations();
     loadReadmeToLeftPanel();
+    highlightEligiblePieces(); // Highlight eligible pieces initially
     
     function initializeBoard() {
         // Create squares
@@ -270,17 +271,17 @@ A feature-rich browser-based chess game with standard rules and visual aids.
     }
     
     function addThreatIndicators(square) {
-        // Add white threat indicator (bottom left)
-        const whiteThreat = document.createElement('div');
-        whiteThreat.className = 'threat-white';
-        whiteThreat.textContent = '0';
-        square.appendChild(whiteThreat);
+        // Add unified threat indicator
+        const threatIndicator = document.createElement('div');
+        threatIndicator.className = 'threat-indicator';
+        threatIndicator.dataset.white = '0';
+        threatIndicator.dataset.black = '0';
         
-        // Add black threat indicator (top right)
-        const blackThreat = document.createElement('div');
-        blackThreat.className = 'threat-black';
-        blackThreat.textContent = '0';
-        square.appendChild(blackThreat);
+        // Set initial opacity custom properties
+        threatIndicator.style.setProperty('--white-opacity', '0');
+        threatIndicator.style.setProperty('--black-opacity', '0');
+        
+        square.appendChild(threatIndicator);
     }
     
     function setupInitialPosition() {
@@ -471,6 +472,9 @@ A feature-rich browser-based chess game with standard rules and visual aids.
             // Recalculate threats after move
             calculateAllThreats();
             
+            // Update eligible pieces highlight for new turn
+            highlightEligiblePieces();
+            
             // Clear highlights and selection
             clearHighlights();
             selectedPiece = null;
@@ -636,20 +640,54 @@ A feature-rich browser-based chess game with standard rules and visual aids.
     }
     
     function updateThreatDisplay() {
-        // Update each square's threat indicators
+        // Determine the maximum threat value to normalize intensities
+        let maxWhiteThreat = 0;
+        let maxBlackThreat = 0;
+        
+        // Find maximum threat values
+        for (let row = 0; row < 8; row++) {
+            for (let col = 0; col < 8; col++) {
+                maxWhiteThreat = Math.max(maxWhiteThreat, threatMap[row][col].white);
+                maxBlackThreat = Math.max(maxBlackThreat, threatMap[row][col].black);
+            }
+        }
+        
+        // Cap the max values to prevent too much scaling
+        maxWhiteThreat = Math.min(maxWhiteThreat, 5);
+        maxBlackThreat = Math.min(maxBlackThreat, 5);
+        
+        // Update each square's threat indicator
         for (let row = 0; row < 8; row++) {
             for (let col = 0; col < 8; col++) {
                 const square = getSquare(row, col);
-                const whiteThreat = square.querySelector('.threat-white');
-                const blackThreat = square.querySelector('.threat-black');
+                const threatIndicator = square.querySelector('.threat-indicator');
                 
-                // Update the threat count display
-                whiteThreat.textContent = threatMap[row][col].white;
-                blackThreat.textContent = threatMap[row][col].black;
+                const whiteThreat = threatMap[row][col].white;
+                const blackThreat = threatMap[row][col].black;
                 
-                // Hide the indicator if there's no threat
-                whiteThreat.style.display = threatMap[row][col].white > 0 ? 'flex' : 'none';
-                blackThreat.style.display = threatMap[row][col].black > 0 ? 'flex' : 'none';
+                // Set the threat count as data attributes
+                threatIndicator.dataset.white = whiteThreat > 0 ? whiteThreat : '';
+                threatIndicator.dataset.black = blackThreat > 0 ? blackThreat : '';
+                
+                // Set boolean attributes to indicate if threats exist
+                threatIndicator.dataset.whiteHasThreat = whiteThreat > 0 ? "true" : "false";
+                threatIndicator.dataset.blackHasThreat = blackThreat > 0 ? "true" : "false";
+                
+                // Calculate opacity based on threat level (from 0.2 to 0.9)
+                const whiteOpacity = whiteThreat > 0 
+                    ? 0.2 + (0.7 * (whiteThreat / maxWhiteThreat))
+                    : 0;
+                    
+                const blackOpacity = blackThreat > 0 
+                    ? 0.2 + (0.7 * (blackThreat / maxBlackThreat))
+                    : 0;
+                
+                // Set custom properties for opacity
+                threatIndicator.style.setProperty('--white-opacity', whiteOpacity.toFixed(2));
+                threatIndicator.style.setProperty('--black-opacity', blackOpacity.toFixed(2));
+                
+                // Show/hide the indicator based on if there are any threats
+                threatIndicator.style.display = (whiteThreat > 0 || blackThreat > 0) ? 'block' : 'none';
             }
         }
     }
@@ -888,5 +926,52 @@ A feature-rich browser-based chess game with standard rules and visual aids.
     
     function isValidPosition(row, col) {
         return row >= 0 && row < 8 && col >= 0 && col < 8;
+    }
+    
+    function highlightEligiblePieces() {
+        // First, remove all existing eligible-piece highlights
+        document.querySelectorAll('.eligible-piece-square').forEach(square => {
+            square.classList.remove('eligible-piece-square');
+        });
+        
+        // Find all pieces of the current turn's color and highlight their squares
+        document.querySelectorAll(`.piece[data-color="${currentTurn}"]`).forEach(piece => {
+            // Check if this piece has at least one legal move
+            const square = piece.parentElement;
+            const row = parseInt(square.dataset.row);
+            const col = parseInt(square.dataset.col);
+            const type = piece.dataset.type;
+            const color = piece.dataset.color;
+            const hasMoved = piece.dataset.hasMoved === 'true';
+            
+            let validMoves = [];
+            
+            // Get valid moves based on piece type
+            switch(type) {
+                case 'pawn':
+                    validMoves = getValidPawnMoves(row, col, color, hasMoved);
+                    break;
+                case 'rook':
+                    validMoves = getValidRookMoves(row, col, color);
+                    break;
+                case 'knight':
+                    validMoves = getValidKnightMoves(row, col, color);
+                    break;
+                case 'bishop':
+                    validMoves = getValidBishopMoves(row, col, color);
+                    break;
+                case 'queen':
+                    validMoves = getValidQueenMoves(row, col, color);
+                    break;
+                case 'king':
+                    validMoves = getValidKingMoves(row, col, color, hasMoved);
+                    break;
+            }
+            
+            // Only highlight squares of pieces that have at least one legal move
+            if (validMoves.length > 0) {
+                square.classList.add('eligible-piece-square');
+            }
+        });
     }
 }); 
