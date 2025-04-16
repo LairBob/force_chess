@@ -55,9 +55,14 @@ h1 {
 }
 
 .valid-move {
+    position: relative;
+}
+
+.move-marker {
     position: absolute;
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
-    background-color: rgba(0, 255, 0, 0.3);
+    background-color: rgba(0, 128, 0, 0.3);
+    z-index: 1;
 } 
