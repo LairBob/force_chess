@@ -3,31 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chess Game</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>Force Chess</title>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <div class="app-container">
-        <div class="left-pane">
-            <h2>Info Panel</h2>
-            <div id="left-panel-content"></div>
-        </div>
+    <div class="container">
+        <h1>Force Chess</h1>
         
-        <div class="center-pane">
-            <h1>Chess Game</h1>
-            <div class="board-container">
-                <div class="notation-row" id="row-notation"></div>
-                <div class="notation-col" id="col-notation"></div>
-                <div id="chessboard"></div>
+        <div class="game-container">
+            <div class="chess-board"></div>
+            
+            <div class="controls">
+                <button id="new-game-btn" class="btn">New Game</button>
+                <button id="undo-btn" class="btn">Undo Move</button>
+                <button id="flip-board-btn" class="btn">Flip Board</button>
+                <div id="turn-indicator" class="turn-indicator">White's turn</div>
             </div>
         </div>
-        
-        <div class="right-pane">
-            <h2>Game History</h2>
-            <div id="right-panel-content"></div>
-        </div>
     </div>
-    
-    <script src="js/chess.js"></script>
+
+    <!-- Load JavaScript files in correct order -->
+    <script src="js/chess-model.js"></script>
+    <script src="js/chess-ui-controller.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html> 

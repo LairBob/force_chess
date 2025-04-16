@@ -182,6 +182,15 @@ h2 {
     cursor: pointer;
     user-select: none;
     position: absolute;
+    cursor: grab;
+}
+
+.piece:active {
+    cursor: grabbing;
+}
+
+.piece.dragging {
+    opacity: 0.6;
 }
 
 .highlight {
@@ -194,6 +203,7 @@ h2 {
 
 .valid-move {
     position: relative;
+    cursor: pointer;
 }
 
 .move-marker {
@@ -218,6 +228,12 @@ h2 {
     font-weight: bold;
     color: white;
     display: block; /* Always show the indicator when at least one threat exists */
+}
+
+/* Valid move highlight for threat indicator */
+.valid-move-highlight {
+    box-shadow: 0 0 0 3px #4CAF50, 0 0 8px 4px rgba(76, 175, 80, 0.5);
+    z-index: 3; /* Ensure it appears above other elements */
 }
 
 /* Top half - White threats (blue) */
