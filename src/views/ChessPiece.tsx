@@ -34,11 +34,22 @@ const ChessPiece: React.FC<ChessPieceProps> = ({ piece }) => {
 
   const pieceChar = getPieceChar(piece.type, piece.color);
   
-  // Add the 'threatened-piece' class if the piece is threatened
-  const pieceClass = `chess-piece ${piece.color.toLowerCase()}-piece ${piece.isThreatened ? 'threatened-piece' : ''}`;
+  // Determine piece state
+  const isContested = piece.isThreatened && piece.isProtected;
+  const isRoving = !piece.isThreatened && !piece.isProtected;
+  
+  // Build piece classes
+  const pieceClasses = [
+    'chess-piece',
+    `${piece.color.toLowerCase()}-piece`,
+    isContested ? 'contested-piece' : 
+      piece.isThreatened ? 'threatened-piece' : 
+      piece.isProtected ? 'protected-piece' : 
+      isRoving ? 'roving-piece' : ''
+  ].filter(Boolean).join(' ');
 
   return (
-    <div className={pieceClass}>
+    <div className={pieceClasses}>
       {pieceChar}
     </div>
   );

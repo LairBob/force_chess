@@ -776,7 +776,8 @@ export class ChessModel {
         board[row][col].blackThreatCount = 0;
         // Reset threatened status for pieces
         if (board[row][col].piece) {
-          board[row][col].piece.isThreatened = false;
+          board[row][col].piece!.isThreatened = false;
+          board[row][col].piece!.isProtected = false;
         }
       }
     }
@@ -793,22 +794,21 @@ export class ChessModel {
           for (const pos of threatSquares) {
             // Don't count as threat if the square has a piece of the same color
             const targetPiece = board[pos.row][pos.col].piece;
-            if (targetPiece && targetPiece.color === piece.color) {
-              continue; // Skip counting threats to pieces of same color
+            if (targetPiece) {
+              if (targetPiece.color === piece.color) {
+                // This is a friendly piece protecting another friendly piece
+                targetPiece.isProtected = true;
+                continue; // Skip counting threats to pieces of same color
+              } else {
+                // This is an enemy piece being threatened
+                targetPiece.isThreatened = true;
+              }
             }
             
             if (piece.color === PlayerColor.WHITE) {
               board[pos.row][pos.col].whiteThreatCount++;
-              // Mark black pieces as threatened
-              if (targetPiece && targetPiece.color === PlayerColor.BLACK) {
-                targetPiece.isThreatened = true;
-              }
             } else {
               board[pos.row][pos.col].blackThreatCount++;
-              // Mark white pieces as threatened
-              if (targetPiece && targetPiece.color === PlayerColor.WHITE) {
-                targetPiece.isThreatened = true;
-              }
             }
           }
         }

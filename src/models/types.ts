@@ -28,6 +28,7 @@ export interface Piece {
   position: Position;
   hasMoved: boolean;
   isThreatened?: boolean; // Whether this piece is threatened by an opponent's piece
+  isProtected?: boolean; // Whether this piece is protected by a piece of the same color
 }
 
 // Square state on the board

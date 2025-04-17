@@ -25,18 +25,63 @@
   cursor: grabbing;
 }
 
-/* Red highlight for threatened pieces using a border/outline effect instead of color change */
+/* Red highlight for threatened pieces */
 .threatened-piece::before {
   content: '';
   position: absolute;
-  top: 3px;
-  left: 3px;
-  right: 3px;
-  bottom: 3px;
+  top: 6px;
+  left: 6px;
+  right: 6px;
+  bottom: 6px;
   border-radius: 50%;
   border: 2px solid rgba(255, 51, 51, 0.5);
   box-shadow: 0 0 5px rgba(255, 51, 51, 0.5);
   animation: pulseBorder 1.5s infinite;
+  z-index: -1;
+}
+
+/* Green highlight for protected pieces - changed to same size as red */
+.protected-piece::after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  right: 6px;
+  bottom: 6px;
+  border-radius: 50%;
+  border: 2px solid rgba(50, 205, 50, 0.5);
+  box-shadow: 0 0 5px rgba(50, 205, 50, 0.5);
+  animation: pulseGreenBorder 1.5s infinite;
+  z-index: -2;
+}
+
+/* Purple highlight for contested pieces (both threatened and protected) */
+.contested-piece::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  right: 6px;
+  bottom: 6px;
+  border-radius: 50%;
+  border: 2px solid rgba(150, 50, 205, 0.5);
+  box-shadow: 0 0 5px rgba(150, 50, 205, 0.5);
+  animation: pulsePurpleBorder 1.5s infinite;
+  z-index: -1;
+}
+
+/* Yellow highlight for roving pieces (neither threatened nor protected) */
+.roving-piece::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  right: 6px;
+  bottom: 6px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 215, 0, 0.3);
+  box-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
+  animation: pulseYellowBorder 1.5s infinite;
   z-index: -1;
 }
 
@@ -49,5 +94,41 @@
   }
   100% {
     box-shadow: 0 0 5px rgba(255, 51, 51, 0.5);
+  }
+}
+
+@keyframes pulseGreenBorder {
+  0% {
+    box-shadow: 0 0 5px rgba(50, 205, 50, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 8px rgba(50, 205, 50, 0.5), 0 0 12px rgba(50, 205, 50, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 5px rgba(50, 205, 50, 0.5);
+  }
+}
+
+@keyframes pulsePurpleBorder {
+  0% {
+    box-shadow: 0 0 5px rgba(150, 50, 205, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 8px rgba(150, 50, 205, 0.5), 0 0 12px rgba(150, 50, 205, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 5px rgba(150, 50, 205, 0.5);
+  }
+}
+
+@keyframes pulseYellowBorder {
+  0% {
+    box-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 8px rgba(255, 215, 0, 0.3), 0 0 12px rgba(255, 215, 0, 0.3);
+  }
+  100% {
+    box-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
   }
 } 

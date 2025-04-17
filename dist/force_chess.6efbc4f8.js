@@ -25343,14 +25343,21 @@ const ChessPiece = ({ piece })=>{
         }
     };
     const pieceChar = getPieceChar(piece.type, piece.color);
-    // Add the 'threatened-piece' class if the piece is threatened
-    const pieceClass = `chess-piece ${piece.color.toLowerCase()}-piece ${piece.isThreatened ? 'threatened-piece' : ''}`;
+    // Determine piece state
+    const isContested = piece.isThreatened && piece.isProtected;
+    const isRoving = !piece.isThreatened && !piece.isProtected;
+    // Build piece classes
+    const pieceClasses = [
+        'chess-piece',
+        `${piece.color.toLowerCase()}-piece`,
+        isContested ? 'contested-piece' : piece.isThreatened ? 'threatened-piece' : piece.isProtected ? 'protected-piece' : isRoving ? 'roving-piece' : ''
+    ].filter(Boolean).join(' ');
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-        className: pieceClass,
+        className: pieceClasses,
         children: pieceChar
     }, void 0, false, {
         fileName: "src/views/ChessPiece.tsx",
-        lineNumber: 41,
+        lineNumber: 52,
         columnNumber: 5
     }, undefined);
 };
@@ -28777,7 +28784,10 @@ class ChessModel {
             board[row][col].whiteThreatCount = 0;
             board[row][col].blackThreatCount = 0;
             // Reset threatened status for pieces
-            if (board[row][col].piece) board[row][col].piece.isThreatened = false;
+            if (board[row][col].piece) {
+                board[row][col].piece.isThreatened = false;
+                board[row][col].piece.isProtected = false;
+            }
         }
         // Calculate threats from each piece
         for(let row = 0; row < 8; row++)for(let col = 0; col < 8; col++){
@@ -28789,16 +28799,16 @@ class ChessModel {
                 for (const pos of threatSquares){
                     // Don't count as threat if the square has a piece of the same color
                     const targetPiece = board[pos.row][pos.col].piece;
-                    if (targetPiece && targetPiece.color === piece.color) continue; // Skip counting threats to pieces of same color
-                    if (piece.color === (0, _types.PlayerColor).WHITE) {
-                        board[pos.row][pos.col].whiteThreatCount++;
-                        // Mark black pieces as threatened
-                        if (targetPiece && targetPiece.color === (0, _types.PlayerColor).BLACK) targetPiece.isThreatened = true;
-                    } else {
-                        board[pos.row][pos.col].blackThreatCount++;
-                        // Mark white pieces as threatened
-                        if (targetPiece && targetPiece.color === (0, _types.PlayerColor).WHITE) targetPiece.isThreatened = true;
+                    if (targetPiece) {
+                        if (targetPiece.color === piece.color) {
+                            // This is a friendly piece protecting another friendly piece
+                            targetPiece.isProtected = true;
+                            continue; // Skip counting threats to pieces of same color
+                        } else // This is an enemy piece being threatened
+                        targetPiece.isThreatened = true;
                     }
+                    if (piece.color === (0, _types.PlayerColor).WHITE) board[pos.row][pos.col].whiteThreatCount++;
+                    else board[pos.row][pos.col].blackThreatCount++;
                 }
             }
         }
