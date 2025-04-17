@@ -26,6 +26,7 @@ body {
   height: 100%;
   font-size: 35px;
   display: flex;
+  position: relative;
 }
 
 .white-piece {
@@ -39,6 +40,31 @@ body {
 
 .chess-piece:active {
   cursor: grabbing;
+}
+
+.threatened-piece:before {
+  content: "";
+  z-index: -1;
+  border: 2px solid #ff333380;
+  border-radius: 50%;
+  animation: 1.5s infinite pulseBorder;
+  position: absolute;
+  inset: 3px;
+  box-shadow: 0 0 5px #ff333380;
+}
+
+@keyframes pulseBorder {
+  0% {
+    box-shadow: 0 0 5px #ff333380;
+  }
+
+  50% {
+    box-shadow: 0 0 8px #ff333380, 0 0 12px #ff333380;
+  }
+
+  100% {
+    box-shadow: 0 0 5px #ff333380;
+  }
 }
 
 .threat-indicator {

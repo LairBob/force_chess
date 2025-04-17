@@ -34,7 +34,8 @@ const ChessPiece: React.FC<ChessPieceProps> = ({ piece }) => {
 
   const pieceChar = getPieceChar(piece.type, piece.color);
   
-  const pieceClass = `chess-piece ${piece.color.toLowerCase()}-piece`;
+  // Add the 'threatened-piece' class if the piece is threatened
+  const pieceClass = `chess-piece ${piece.color.toLowerCase()}-piece ${piece.isThreatened ? 'threatened-piece' : ''}`;
 
   return (
     <div className={pieceClass}>

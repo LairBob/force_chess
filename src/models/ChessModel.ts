@@ -769,11 +769,15 @@ export class ChessModel {
   private calculateAllThreats(): void {
     const board = this.gameState.board;
     
-    // Reset all threat counts
+    // Reset all threat counts and threatened status
     for (let row = 0; row < 8; row++) {
       for (let col = 0; col < 8; col++) {
         board[row][col].whiteThreatCount = 0;
         board[row][col].blackThreatCount = 0;
+        // Reset threatened status for pieces
+        if (board[row][col].piece) {
+          board[row][col].piece.isThreatened = false;
+        }
       }
     }
     
@@ -795,8 +799,16 @@ export class ChessModel {
             
             if (piece.color === PlayerColor.WHITE) {
               board[pos.row][pos.col].whiteThreatCount++;
+              // Mark black pieces as threatened
+              if (targetPiece && targetPiece.color === PlayerColor.BLACK) {
+                targetPiece.isThreatened = true;
+              }
             } else {
               board[pos.row][pos.col].blackThreatCount++;
+              // Mark white pieces as threatened
+              if (targetPiece && targetPiece.color === PlayerColor.WHITE) {
+                targetPiece.isThreatened = true;
+              }
             }
           }
         }

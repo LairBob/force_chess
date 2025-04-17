@@ -160,11 +160,11 @@
       });
     }
   }
-})({"g75f7":[function(require,module,exports,__globalThis) {
+})({"7KwkS":[function(require,module,exports,__globalThis) {
 var global = arguments[3];
 var HMR_HOST = null;
 var HMR_PORT = null;
-var HMR_SERVER_PORT = 56442;
+var HMR_SERVER_PORT = 1234;
 var HMR_SECURE = false;
 var HMR_ENV_HASH = "439701173a9199ea";
 var HMR_USE_SSE = false;
@@ -25343,13 +25343,14 @@ const ChessPiece = ({ piece })=>{
         }
     };
     const pieceChar = getPieceChar(piece.type, piece.color);
-    const pieceClass = `chess-piece ${piece.color.toLowerCase()}-piece`;
+    // Add the 'threatened-piece' class if the piece is threatened
+    const pieceClass = `chess-piece ${piece.color.toLowerCase()}-piece ${piece.isThreatened ? 'threatened-piece' : ''}`;
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
         className: pieceClass,
         children: pieceChar
     }, void 0, false, {
         fileName: "src/views/ChessPiece.tsx",
-        lineNumber: 40,
+        lineNumber: 41,
         columnNumber: 5
     }, undefined);
 };
@@ -28771,10 +28772,12 @@ class ChessModel {
    * Calculate threats for all squares on the board
    */ calculateAllThreats() {
         const board = this.gameState.board;
-        // Reset all threat counts
+        // Reset all threat counts and threatened status
         for(let row = 0; row < 8; row++)for(let col = 0; col < 8; col++){
             board[row][col].whiteThreatCount = 0;
             board[row][col].blackThreatCount = 0;
+            // Reset threatened status for pieces
+            if (board[row][col].piece) board[row][col].piece.isThreatened = false;
         }
         // Calculate threats from each piece
         for(let row = 0; row < 8; row++)for(let col = 0; col < 8; col++){
@@ -28787,8 +28790,15 @@ class ChessModel {
                     // Don't count as threat if the square has a piece of the same color
                     const targetPiece = board[pos.row][pos.col].piece;
                     if (targetPiece && targetPiece.color === piece.color) continue; // Skip counting threats to pieces of same color
-                    if (piece.color === (0, _types.PlayerColor).WHITE) board[pos.row][pos.col].whiteThreatCount++;
-                    else board[pos.row][pos.col].blackThreatCount++;
+                    if (piece.color === (0, _types.PlayerColor).WHITE) {
+                        board[pos.row][pos.col].whiteThreatCount++;
+                        // Mark black pieces as threatened
+                        if (targetPiece && targetPiece.color === (0, _types.PlayerColor).BLACK) targetPiece.isThreatened = true;
+                    } else {
+                        board[pos.row][pos.col].blackThreatCount++;
+                        // Mark white pieces as threatened
+                        if (targetPiece && targetPiece.color === (0, _types.PlayerColor).WHITE) targetPiece.isThreatened = true;
+                    }
                 }
             }
         }
@@ -28988,6 +28998,6 @@ class ChessModel {
     }
 }
 
-},{"./types":"hEtH3","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}]},["g75f7","4dmnR"], "4dmnR", "parcelRequired8a0", {}, null, null, "http://localhost:56442")
+},{"./types":"hEtH3","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}]},["7KwkS","4dmnR"], "4dmnR", "parcelRequired8a0", {}, null, null, "http://localhost:1234")
 
 //# sourceMappingURL=force_chess.6efbc4f8.js.map
