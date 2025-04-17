@@ -1,0 +1,20 @@
+{
+  "name": "force-chess",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A chess application with visual overlays for game logic",
+  "scripts": {
+    "start": "parcel src/index.html",
+    "build": "parcel build src/index.html"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "parcel": "^2.10.3",
+    "typescript": "^5.0.4"
+  }
+} 
