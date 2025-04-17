@@ -24,12 +24,28 @@ const ChessSquare: React.FC<ChessSquareProps> = ({
   // Determine if this is a light or dark square
   const isLightSquare = (row + col) % 2 === 0;
   
+  // Get the destination state for possible moves
+  let destinationState = '';
+  if (square.isPossibleMove) {
+    if (square.isContestedDestination) {
+      destinationState = 'contested';
+    } else if (square.isThreatenedDestination) {
+      destinationState = 'threatened';
+    } else if (square.isProtectedDestination) {
+      destinationState = 'protected';
+    } else if (square.isNeutralDestination) {
+      destinationState = 'neutral';
+    }
+  }
+  
   // Build CSS classes for square states
   const squareClasses = [
     'chess-square',
     isLightSquare ? 'light-square' : 'dark-square',
     square.isSelected ? 'selected' : '',
     square.isLegalMove ? 'legal-move' : '',
+    square.isPossibleMove ? 'possible-move' : '',
+    destinationState, // Add the specific state class
     square.isCheck ? 'check' : '',
     square.isHovered ? 'hovered' : ''
   ].filter(Boolean).join(' ');

@@ -17,13 +17,16 @@ const ThreatIndicator: React.FC<ThreatIndicatorProps> = ({ whiteThreatCount, bla
   const whiteIntensityClass = getIntensityClass(whiteThreatCount);
   const blackIntensityClass = getIntensityClass(blackThreatCount);
   
+  // Add no-shadow class when both white and black threats are zero
+  const noShadow = whiteThreatCount === 0 && blackThreatCount === 0;
+  
   return (
-    <div className="threat-indicator">
+    <div className={`threat-indicator ${noShadow ? 'no-shadow' : ''}`}>
       <div className={`top-half ${whiteIntensityClass}`}>
-        {whiteThreatCount > 0 && whiteThreatCount}
+        {/* Removed number display */}
       </div>
       <div className={`bottom-half ${blackIntensityClass}`}>
-        {blackThreatCount > 0 && blackThreatCount}
+        {/* Removed number display */}
       </div>
     </div>
   );

@@ -25228,12 +25228,22 @@ const ChessSquare = ({ square, onClick, onMouseEnter, onMouseLeave, showThreats 
     const { row, col } = square.position;
     // Determine if this is a light or dark square
     const isLightSquare = (row + col) % 2 === 0;
+    // Get the destination state for possible moves
+    let destinationState = '';
+    if (square.isPossibleMove) {
+        if (square.isContestedDestination) destinationState = 'contested';
+        else if (square.isThreatenedDestination) destinationState = 'threatened';
+        else if (square.isProtectedDestination) destinationState = 'protected';
+        else if (square.isNeutralDestination) destinationState = 'neutral';
+    }
     // Build CSS classes for square states
     const squareClasses = [
         'chess-square',
         isLightSquare ? 'light-square' : 'dark-square',
         square.isSelected ? 'selected' : '',
         square.isLegalMove ? 'legal-move' : '',
+        square.isPossibleMove ? 'possible-move' : '',
+        destinationState,
         square.isCheck ? 'check' : '',
         square.isHovered ? 'hovered' : ''
     ].filter(Boolean).join(' ');
@@ -25249,21 +25259,21 @@ const ChessSquare = ({ square, onClick, onMouseEnter, onMouseLeave, showThreats 
                 piece: square.piece
             }, void 0, false, {
                 fileName: "src/views/ChessSquare.tsx",
-                lineNumber: 47,
+                lineNumber: 63,
                 columnNumber: 24
             }, undefined),
             square.isLegalMove && !square.piece && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
                 className: "legal-move-indicator"
             }, void 0, false, {
                 fileName: "src/views/ChessSquare.tsx",
-                lineNumber: 50,
+                lineNumber: 66,
                 columnNumber: 47
             }, undefined),
             square.isCheck && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
                 className: "check-indicator"
             }, void 0, false, {
                 fileName: "src/views/ChessSquare.tsx",
-                lineNumber: 51,
+                lineNumber: 67,
                 columnNumber: 26
             }, undefined),
             showThreats && hasThreat && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _threatIndicatorDefault.default), {
@@ -25271,13 +25281,13 @@ const ChessSquare = ({ square, onClick, onMouseEnter, onMouseLeave, showThreats 
                 blackThreatCount: square.blackThreatCount
             }, void 0, false, {
                 fileName: "src/views/ChessSquare.tsx",
-                lineNumber: 55,
+                lineNumber: 71,
                 columnNumber: 9
             }, undefined)
         ]
     }, void 0, true, {
         fileName: "src/views/ChessSquare.tsx",
-        lineNumber: 41,
+        lineNumber: 57,
         columnNumber: 5
     }, undefined);
 };
@@ -25350,14 +25360,16 @@ const ChessPiece = ({ piece })=>{
     const pieceClasses = [
         'chess-piece',
         `${piece.color.toLowerCase()}-piece`,
-        isContested ? 'contested-piece' : piece.isThreatened ? 'threatened-piece' : piece.isProtected ? 'protected-piece' : isRoving ? 'roving-piece' : ''
+        isContested ? 'contested-piece' : piece.isThreatened ? 'threatened-piece' : piece.isProtected ? 'protected-piece' : isRoving ? 'roving-piece' : '',
+        piece.isThreatener ? 'threatener-piece' : '',
+        piece.isProtector ? 'protector-piece' : ''
     ].filter(Boolean).join(' ');
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
         className: pieceClasses,
         children: pieceChar
     }, void 0, false, {
         fileName: "src/views/ChessPiece.tsx",
-        lineNumber: 52,
+        lineNumber: 54,
         columnNumber: 5
     }, undefined);
 };
@@ -27723,29 +27735,29 @@ const ThreatIndicator = ({ whiteThreatCount, blackThreatCount })=>{
     };
     const whiteIntensityClass = getIntensityClass(whiteThreatCount);
     const blackIntensityClass = getIntensityClass(blackThreatCount);
+    // Add no-shadow class when both white and black threats are zero
+    const noShadow = whiteThreatCount === 0 && blackThreatCount === 0;
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-        className: "threat-indicator",
+        className: `threat-indicator ${noShadow ? 'no-shadow' : ''}`,
         children: [
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-                className: `top-half ${whiteIntensityClass}`,
-                children: whiteThreatCount > 0 && whiteThreatCount
-            }, void 0, false, {
-                fileName: "src/views/ThreatIndicator.tsx",
-                lineNumber: 22,
-                columnNumber: 7
-            }, undefined),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-                className: `bottom-half ${blackIntensityClass}`,
-                children: blackThreatCount > 0 && blackThreatCount
+                className: `top-half ${whiteIntensityClass}`
             }, void 0, false, {
                 fileName: "src/views/ThreatIndicator.tsx",
                 lineNumber: 25,
+                columnNumber: 7
+            }, undefined),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                className: `bottom-half ${blackIntensityClass}`
+            }, void 0, false, {
+                fileName: "src/views/ThreatIndicator.tsx",
+                lineNumber: 28,
                 columnNumber: 7
             }, undefined)
         ]
     }, void 0, true, {
         fileName: "src/views/ThreatIndicator.tsx",
-        lineNumber: 21,
+        lineNumber: 24,
         columnNumber: 5
     }, undefined);
 };
@@ -28014,6 +28026,7 @@ var _types = require("./types");
 class ChessModel {
     constructor(){
         this.listeners = [];
+        this.squareThreatenersMap = new Map();
         // Initialize with a standard chess board setup
         this.gameState = this.setupNewGame();
         this.interactionState = {
@@ -28060,6 +28073,11 @@ class ChessModel {
                     isSelected: false,
                     isCheck: false,
                     isHovered: false,
+                    isPossibleMove: false,
+                    isThreatenedDestination: false,
+                    isProtectedDestination: false,
+                    isContestedDestination: false,
+                    isNeutralDestination: false,
                     whiteThreatCount: 0,
                     blackThreatCount: 0
                 })));
@@ -28296,8 +28314,91 @@ class ChessModel {
     }
     // Hover over a square
     hoverSquare(position) {
+        // Clear previous hover state and possible moves
+        for(let row = 0; row < 8; row++)for(let col = 0; col < 8; col++){
+            this.gameState.board[row][col].isHovered = false;
+            this.gameState.board[row][col].isPossibleMove = false;
+            this.gameState.board[row][col].isThreatenedDestination = false;
+            this.gameState.board[row][col].isProtectedDestination = false;
+            this.gameState.board[row][col].isContestedDestination = false;
+            this.gameState.board[row][col].isNeutralDestination = false;
+            // Reset threatener/protector status for all pieces
+            if (this.gameState.board[row][col].piece) {
+                this.gameState.board[row][col].piece.isThreatener = false;
+                this.gameState.board[row][col].piece.isProtector = false;
+            }
+        }
+        if (position) {
+            const { row, col } = position;
+            this.gameState.board[row][col].isHovered = true;
+            // Check if there are pieces threatening or protecting this square
+            const squareKey = `${row},${col}`;
+            const threateners = this.squareThreatenersMap.get(squareKey) || [];
+            // Mark pieces that are threatening or protecting this square
+            for (const piece of threateners){
+                const targetSquare = this.gameState.board[row][col];
+                const targetPiece = targetSquare.piece;
+                if (targetPiece && targetPiece.color === piece.color) // This piece is protecting the target square
+                piece.isProtector = true;
+                else // This piece is threatening the target square
+                piece.isThreatener = true;
+            }
+            // If there's a piece on the hovered square, calculate its possible moves
+            const hoveredPiece = this.gameState.board[row][col].piece;
+            if (hoveredPiece) {
+                // Calculate possible legal moves for the hovered piece
+                const possibleMoves = this.calculateLegalMoves(hoveredPiece);
+                // Temporarily remove the piece from its current position
+                const originalPiece = hoveredPiece;
+                this.gameState.board[row][col].piece = null;
+                // Recalculate threats without the hovered piece
+                this.calculateAllThreats();
+                // Mark the possible moves on the board with appropriate state
+                for (const move of possibleMoves){
+                    const square = this.gameState.board[move.row][move.col];
+                    square.isPossibleMove = true;
+                    // Determine the state of this destination square
+                    const hoveredPieceColor = originalPiece.color;
+                    const opponentColor = hoveredPieceColor === (0, _types.PlayerColor).WHITE ? (0, _types.PlayerColor).BLACK : (0, _types.PlayerColor).WHITE;
+                    // Check for threats from opponent
+                    const isThreatenedByOpponent = hoveredPieceColor === (0, _types.PlayerColor).WHITE ? square.blackThreatCount > 0 : square.whiteThreatCount > 0;
+                    // Check for protection from friendly pieces
+                    const isProtectedByFriendly = hoveredPieceColor === (0, _types.PlayerColor).WHITE ? square.whiteThreatCount > 0 : square.blackThreatCount > 0;
+                    // Set the state flags
+                    if (isThreatenedByOpponent && isProtectedByFriendly) square.isContestedDestination = true;
+                    else if (isThreatenedByOpponent) square.isThreatenedDestination = true;
+                    else if (isProtectedByFriendly) square.isProtectedDestination = true;
+                    else square.isNeutralDestination = true;
+                }
+                // Put the piece back
+                this.gameState.board[row][col].piece = originalPiece;
+                // Recalculate threats with the piece back in place
+                this.calculateAllThreats();
+            } else {
+                // If hovering over an empty square that is threatened or protected, 
+                // mark the pieces that are threatening or protecting it
+                const isThreatenedByWhite = this.gameState.board[row][col].whiteThreatCount > 0;
+                const isThreatenedByBlack = this.gameState.board[row][col].blackThreatCount > 0;
+                if (isThreatenedByWhite || isThreatenedByBlack) {
+                    // Find pieces threatening this square
+                    for(let r = 0; r < 8; r++)for(let c = 0; c < 8; c++){
+                        const piece = this.gameState.board[r][c].piece;
+                        if (piece) {
+                            const threatSquares = this.getThreatSquares(piece);
+                            if (threatSquares.some((p)=>p.row === row && p.col === col)) {
+                                if (this.gameState.board[row][col].piece) {
+                                    // If there's a piece on the target square
+                                    if (this.gameState.board[row][col].piece.color !== piece.color) piece.isThreatener = true;
+                                    else piece.isProtector = true;
+                                } else // Empty square
+                                piece.isThreatener = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
         this.interactionState.hoveredSquare = position;
-        this.updateBoardVisuals();
         this.notifyChange();
     }
     // Move a piece
@@ -28695,6 +28796,11 @@ class ChessModel {
             square.isSelected = false;
             square.isLegalMove = false;
             square.isHovered = false;
+            square.isPossibleMove = false;
+            square.isThreatenedDestination = false;
+            square.isProtectedDestination = false;
+            square.isContestedDestination = false;
+            square.isNeutralDestination = false;
         }
         // Mark selected square
         if (this.interactionState.selectedSquare) {
@@ -28787,8 +28893,13 @@ class ChessModel {
             if (board[row][col].piece) {
                 board[row][col].piece.isThreatened = false;
                 board[row][col].piece.isProtected = false;
+                board[row][col].piece.isThreatener = false;
+                board[row][col].piece.isProtector = false;
             }
         }
+        // First pass: Build lists of threatening pieces for each square
+        // Using a map to store pieces threatening/protecting each square
+        const squareThreatenersMap = new Map();
         // Calculate threats from each piece
         for(let row = 0; row < 8; row++)for(let col = 0; col < 8; col++){
             const piece = board[row][col].piece;
@@ -28797,6 +28908,11 @@ class ChessModel {
                 const threatSquares = this.getThreatSquares(piece);
                 // Update threat counts
                 for (const pos of threatSquares){
+                    const squareKey = `${pos.row},${pos.col}`;
+                    // Initialize arrays if not already present
+                    if (!squareThreatenersMap.has(squareKey)) squareThreatenersMap.set(squareKey, []);
+                    // Add this piece to the list of pieces threatening this square
+                    squareThreatenersMap.get(squareKey).push(piece);
                     // Don't count as threat if the square has a piece of the same color
                     const targetPiece = board[pos.row][pos.col].piece;
                     if (targetPiece) {
@@ -28812,6 +28928,8 @@ class ChessModel {
                 }
             }
         }
+        // Store the threateners map in the game state for use when hovering
+        this.squareThreatenersMap = squareThreatenersMap;
     }
     /**
    * Get all squares threatened by a piece

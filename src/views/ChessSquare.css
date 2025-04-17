@@ -29,6 +29,31 @@
   background-color: rgba(144, 238, 144, 0.3);
 }
 
+/* Basic possible move style */
+.possible-move {
+  box-shadow: inset 0 0 0 2px rgba(135, 206, 250, 0.6);
+}
+
+/* Possible move to a threatened square (pink) */
+.possible-move.threatened {
+  background-color: rgba(255, 105, 180, 0.2);
+}
+
+/* Possible move to a contested square (purple) */
+.possible-move.contested {
+  background-color: rgba(150, 50, 205, 0.2);
+}
+
+/* Possible move to a protected square (green) */
+.possible-move.protected {
+  background-color: rgba(50, 205, 50, 0.2);
+}
+
+/* Possible move to a neutral/roving square (blue) */
+.possible-move.neutral {
+  background-color: rgba(70, 130, 180, 0.2);
+}
+
 .check {
   background-color: rgba(255, 0, 0, 0.3);
 }

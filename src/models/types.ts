@@ -29,6 +29,8 @@ export interface Piece {
   hasMoved: boolean;
   isThreatened?: boolean; // Whether this piece is threatened by an opponent's piece
   isProtected?: boolean; // Whether this piece is protected by a piece of the same color
+  isThreatener?: boolean; // Whether this piece is threatening the hovered square
+  isProtector?: boolean; // Whether this piece is protecting the hovered square
 }
 
 // Square state on the board
@@ -39,6 +41,12 @@ export interface Square {
   isSelected: boolean;
   isCheck: boolean;
   isHovered: boolean;
+  isPossibleMove: boolean; // Indicates if this is a possible move for the hovered piece
+  // States for color-coding possible move destinations
+  isThreatenedDestination: boolean;
+  isProtectedDestination: boolean;
+  isContestedDestination: boolean;
+  isNeutralDestination: boolean;
   whiteThreatCount: number; // Number of white pieces threatening this square
   blackThreatCount: number; // Number of black pieces threatening this square
 }

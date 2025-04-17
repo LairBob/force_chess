@@ -15,7 +15,7 @@ body {
 }
 
 .chess-piece {
-  z-index: 1;
+  z-index: 5;
   cursor: grab;
   -webkit-user-select: none;
   user-select: none;
@@ -47,9 +47,13 @@ body {
   z-index: -1;
   border: 2px solid #ff333380;
   border-radius: 50%;
+  width: 26px;
+  height: 26px;
   animation: 1.5s infinite pulseBorder;
   position: absolute;
-  inset: 6px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   box-shadow: 0 0 5px #ff333380;
 }
 
@@ -58,9 +62,13 @@ body {
   z-index: -2;
   border: 2px solid #32cd3280;
   border-radius: 50%;
+  width: 26px;
+  height: 26px;
   animation: 1.5s infinite pulseGreenBorder;
   position: absolute;
-  inset: 6px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   box-shadow: 0 0 5px #32cd3280;
 }
 
@@ -69,21 +77,47 @@ body {
   z-index: -1;
   border: 2px solid #9632cd80;
   border-radius: 50%;
+  width: 26px;
+  height: 26px;
   animation: 1.5s infinite pulsePurpleBorder;
   position: absolute;
-  inset: 6px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   box-shadow: 0 0 5px #9632cd80;
 }
 
 .roving-piece:before {
   content: "";
   z-index: -1;
-  border: 2px solid #ffd7004d;
+  border: 2px solid #4682b44d;
   border-radius: 50%;
+  width: 26px;
+  height: 26px;
   animation: 1.5s infinite pulseYellowBorder;
   position: absolute;
-  inset: 6px;
-  box-shadow: 0 0 5px #ffd7004d;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 5px #4682b44d;
+}
+
+.threatener-piece, .protector-piece {
+  animation: 1.5s infinite pulseOpacity;
+}
+
+@keyframes pulseOpacity {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: .5;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 
 @keyframes pulseBorder {
@@ -130,15 +164,15 @@ body {
 
 @keyframes pulseYellowBorder {
   0% {
-    box-shadow: 0 0 5px #ffd7004d;
+    box-shadow: 0 0 5px #4682b44d;
   }
 
   50% {
-    box-shadow: 0 0 8px #ffd7004d, 0 0 12px #ffd7004d;
+    box-shadow: 0 0 8px #4682b44d, 0 0 12px #4682b44d;
   }
 
   100% {
-    box-shadow: 0 0 5px #ffd7004d;
+    box-shadow: 0 0 5px #4682b44d;
   }
 }
 
@@ -157,6 +191,10 @@ body {
   box-shadow: 0 0 4px #000000b3;
 }
 
+.threat-indicator.no-shadow {
+  box-shadow: none;
+}
+
 .top-half, .bottom-half {
   color: #fff;
   text-shadow: 0 0 2px #000000e6;
@@ -171,7 +209,8 @@ body {
 
 .top-half.no-threat {
   color: #0000;
-  background-color: #dcdcdc99;
+  text-shadow: none;
+  background-color: #dcdcdc1a;
 }
 
 .top-half.threat-1 {
@@ -192,12 +231,13 @@ body {
 }
 
 .top-half.threat-5 {
-  background-color: #2878ff;
+  background-color: #0064ff;
 }
 
 .bottom-half.no-threat {
   color: #0000;
-  background-color: #b4b4b499;
+  text-shadow: none;
+  background-color: #b4b4b41a;
 }
 
 .bottom-half.threat-1 {
@@ -217,7 +257,7 @@ body {
 }
 
 .bottom-half.threat-5 {
-  background-color: #141414;
+  background-color: #000;
 }
 
 .chess-square {
@@ -249,6 +289,26 @@ body {
 
 .legal-move {
   background-color: #90ee904d;
+}
+
+.possible-move {
+  box-shadow: inset 0 0 0 2px #87cefa99;
+}
+
+.possible-move.threatened {
+  background-color: #ff69b433;
+}
+
+.possible-move.contested {
+  background-color: #9632cd33;
+}
+
+.possible-move.protected {
+  background-color: #32cd3233;
+}
+
+.possible-move.neutral {
+  background-color: #4682b433;
 }
 
 .check {

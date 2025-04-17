@@ -45,7 +45,9 @@ const ChessPiece: React.FC<ChessPieceProps> = ({ piece }) => {
     isContested ? 'contested-piece' : 
       piece.isThreatened ? 'threatened-piece' : 
       piece.isProtected ? 'protected-piece' : 
-      isRoving ? 'roving-piece' : ''
+      isRoving ? 'roving-piece' : '',
+    piece.isThreatener ? 'threatener-piece' : '',
+    piece.isProtector ? 'protector-piece' : ''
   ].filter(Boolean).join(' ');
 
   return (
