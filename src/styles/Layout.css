@@ -1,0 +1,94 @@
+/* Main layout grid for the full application */
+.app-container {
+  display: grid;
+  grid-template-columns: 20% 1fr 1fr 20%;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "header header header header"
+    "transcription chessboard gamecontrol options"
+    "transcription infopanel infopanel options";
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #f0f0f0;
+}
+
+/* Header area containing title */
+.app-header {
+  grid-area: header;
+  text-align: center;
+  padding: 10px;
+  background-color: #333;
+  color: white;
+}
+
+.app-header h1 {
+  margin: 0;
+}
+
+/* Game Transcription panel (left side) */
+.game-transcription {
+  grid-area: transcription;
+  background-color: #f8f8f8;
+  border-right: 1px solid #ddd;
+  padding: 10px;
+  overflow: hidden;
+}
+
+/* Chess board container */
+.chess-board-wrapper {
+  grid-area: chessboard;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* Game control panel */
+.game-control-panel {
+  grid-area: gamecontrol;
+  background-color: #f0f0f0;
+  border-left: 1px solid #ddd;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Display options panel (right side) */
+.display-options {
+  grid-area: options;
+  background-color: #f8f8f8;
+  border-left: 1px solid #ddd;
+  padding: 10px;
+  overflow: hidden;
+}
+
+/* Info panel (bottom) */
+.info-panel-wrapper {
+  grid-area: infopanel;
+  background-color: #f5f5f5;
+  border-top: 1px solid #ddd;
+  padding: 10px;
+  overflow: hidden;
+}
+
+/* For mobile responsiveness */
+@media (max-width: 768px) {
+  .app-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto auto;
+    grid-template-areas:
+      "header"
+      "chessboard"
+      "gamecontrol"
+      "infopanel"
+      "transcription"
+      "options";
+    height: auto;
+    overflow: auto;
+  }
+} 

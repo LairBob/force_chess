@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import ChessBoard from './ChessBoard';
-import GameInfo from './GameInfo';
 import { GameController } from '../controllers/GameController';
 import { GameState, InteractionState } from '../models/types';
 import './ChessGame.css';
@@ -34,17 +33,6 @@ const ChessGame: React.FC<ChessGameProps> = ({ controller }) => {
         onSquareClick={(position) => controller.handleSquareClick(position)}
         onSquareHover={(position) => controller.handleSquareHover(position)}
         onSquareLeave={() => controller.handleSquareLeave()}
-      />
-      <GameInfo 
-        currentPlayer={gameState.currentPlayer}
-        isCheck={gameState.isCheck}
-        isCheckmate={gameState.isCheckmate}
-        isStalemate={gameState.isStalemate}
-        moveHistory={gameState.moveHistory}
-        capturedPieces={gameState.capturedPieces}
-        onResetGame={() => controller.resetGame()}
-        showThreats={interactionState.showThreats}
-        onToggleThreats={() => controller.toggleThreatIndicators()}
       />
     </div>
   );

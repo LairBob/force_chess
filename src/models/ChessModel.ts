@@ -55,21 +55,36 @@ export class ChessModel {
   // Set up a new game
   private setupNewGame(): GameState {
     const board: Square[][] = Array(8).fill(null).map((_, row) => 
-      Array(8).fill(null).map((_, col) => ({
-        position: { row, col },
-        piece: null,
-        isLegalMove: false,
-        isSelected: false,
-        isCheck: false,
-        isHovered: false,
-        isPossibleMove: false,
-        isThreatenedDestination: false,
-        isProtectedDestination: false,
-        isContestedDestination: false,
-        isNeutralDestination: false,
-        whiteThreatCount: 0,
-        blackThreatCount: 0
-      }))
+      Array(8).fill(null).map((_, col) => {
+        // Calculate file (a-h) and rank (1-8)
+        const file = String.fromCharCode('a'.charCodeAt(0) + col);
+        const rank = 8 - row;
+        
+        // Determine square color (white or black)
+        const color = (row + col) % 2 === 0 ? PlayerColor.BLACK : PlayerColor.WHITE;
+        
+        return {
+          position: { row, col },
+          file,
+          rank,
+          color,
+          piece: null,
+          hasPiece: false,
+          isLegalMove: false,
+          isSelected: false,
+          isCheck: false,
+          isHovered: false,
+          isPossibleMove: false,
+          isThreatenedDestination: false,
+          isProtectedDestination: false,
+          isContestedDestination: false,
+          isNeutralDestination: false,
+          whiteThreatCount: 0,
+          blackThreatCount: 0,
+          contentionVolume: 0,
+          contentionRatio: 0
+        };
+      })
     );
 
     // Place the pieces on the board
@@ -99,6 +114,7 @@ export class ChessModel {
         position: { row: 6, col },
         hasMoved: false
       };
+      board[6][col].hasPiece = true;
 
       // Black pawns (row 1)
       board[1][col].piece = {
@@ -108,6 +124,7 @@ export class ChessModel {
         position: { row: 1, col },
         hasMoved: false
       };
+      board[1][col].hasPiece = true;
     }
 
     // Set up rooks
@@ -118,6 +135,8 @@ export class ChessModel {
       position: { row: 7, col: 0 },
       hasMoved: false
     };
+    board[7][0].hasPiece = true;
+    
     board[7][7].piece = {
       id: 'white-rook-1',
       type: PieceType.ROOK,
@@ -125,6 +144,8 @@ export class ChessModel {
       position: { row: 7, col: 7 },
       hasMoved: false
     };
+    board[7][7].hasPiece = true;
+    
     board[0][0].piece = {
       id: 'black-rook-0',
       type: PieceType.ROOK,
@@ -132,6 +153,8 @@ export class ChessModel {
       position: { row: 0, col: 0 },
       hasMoved: false
     };
+    board[0][0].hasPiece = true;
+    
     board[0][7].piece = {
       id: 'black-rook-1',
       type: PieceType.ROOK,
@@ -139,6 +162,7 @@ export class ChessModel {
       position: { row: 0, col: 7 },
       hasMoved: false
     };
+    board[0][7].hasPiece = true;
 
     // Set up knights
     board[7][1].piece = {
@@ -148,6 +172,8 @@ export class ChessModel {
       position: { row: 7, col: 1 },
       hasMoved: false
     };
+    board[7][1].hasPiece = true;
+    
     board[7][6].piece = {
       id: 'white-knight-1',
       type: PieceType.KNIGHT,
@@ -155,6 +181,8 @@ export class ChessModel {
       position: { row: 7, col: 6 },
       hasMoved: false
     };
+    board[7][6].hasPiece = true;
+    
     board[0][1].piece = {
       id: 'black-knight-0',
       type: PieceType.KNIGHT,
@@ -162,6 +190,8 @@ export class ChessModel {
       position: { row: 0, col: 1 },
       hasMoved: false
     };
+    board[0][1].hasPiece = true;
+    
     board[0][6].piece = {
       id: 'black-knight-1',
       type: PieceType.KNIGHT,
@@ -169,6 +199,7 @@ export class ChessModel {
       position: { row: 0, col: 6 },
       hasMoved: false
     };
+    board[0][6].hasPiece = true;
 
     // Set up bishops
     board[7][2].piece = {
@@ -178,6 +209,8 @@ export class ChessModel {
       position: { row: 7, col: 2 },
       hasMoved: false
     };
+    board[7][2].hasPiece = true;
+    
     board[7][5].piece = {
       id: 'white-bishop-1',
       type: PieceType.BISHOP,
@@ -185,6 +218,8 @@ export class ChessModel {
       position: { row: 7, col: 5 },
       hasMoved: false
     };
+    board[7][5].hasPiece = true;
+    
     board[0][2].piece = {
       id: 'black-bishop-0',
       type: PieceType.BISHOP,
@@ -192,6 +227,8 @@ export class ChessModel {
       position: { row: 0, col: 2 },
       hasMoved: false
     };
+    board[0][2].hasPiece = true;
+    
     board[0][5].piece = {
       id: 'black-bishop-1',
       type: PieceType.BISHOP,
@@ -199,6 +236,7 @@ export class ChessModel {
       position: { row: 0, col: 5 },
       hasMoved: false
     };
+    board[0][5].hasPiece = true;
 
     // Set up queens
     board[7][3].piece = {
@@ -208,6 +246,8 @@ export class ChessModel {
       position: { row: 7, col: 3 },
       hasMoved: false
     };
+    board[7][3].hasPiece = true;
+    
     board[0][3].piece = {
       id: 'black-queen',
       type: PieceType.QUEEN,
@@ -215,6 +255,7 @@ export class ChessModel {
       position: { row: 0, col: 3 },
       hasMoved: false
     };
+    board[0][3].hasPiece = true;
 
     // Set up kings
     board[7][4].piece = {
@@ -224,6 +265,8 @@ export class ChessModel {
       position: { row: 7, col: 4 },
       hasMoved: false
     };
+    board[7][4].hasPiece = true;
+    
     board[0][4].piece = {
       id: 'black-king',
       type: PieceType.KING,
@@ -231,6 +274,7 @@ export class ChessModel {
       position: { row: 0, col: 4 },
       hasMoved: false
     };
+    board[0][4].hasPiece = true;
   }
 
   // Select a piece
@@ -434,7 +478,9 @@ export class ChessModel {
         rook.position = { row: from.row, col: rookToCol };
         rook.hasMoved = true;
         this.gameState.board[from.row][rookCol].piece = null;
+        this.gameState.board[from.row][rookCol].hasPiece = false;
         this.gameState.board[from.row][rookToCol].piece = rook;
+        this.gameState.board[from.row][rookToCol].hasPiece = true;
       }
     }
     
@@ -452,6 +498,7 @@ export class ChessModel {
         move.capturedPiece = { ...enPassantPiece };
         this.gameState.capturedPieces.push({ ...enPassantPiece });
         this.gameState.board[captureRow][captureCol].piece = null;
+        this.gameState.board[captureRow][captureCol].hasPiece = false;
       }
     }
     
@@ -466,9 +513,13 @@ export class ChessModel {
     
     // Update the board
     this.gameState.board[from.row][from.col].piece = null;
+    this.gameState.board[from.row][from.col].hasPiece = false;
+    
     selectedPiece.position = { ...to };
     selectedPiece.hasMoved = true;
+    
     this.gameState.board[to.row][to.col].piece = selectedPiece;
+    this.gameState.board[to.row][to.col].hasPiece = true;
     
     // Add the move to history
     this.gameState.moveHistory.push(move);
@@ -957,6 +1008,23 @@ export class ChessModel {
               board[pos.row][pos.col].blackThreatCount++;
             }
           }
+        }
+      }
+    }
+    
+    // Calculate contentionVolume and contentionRatio for each square
+    for (let row = 0; row < 8; row++) {
+      for (let col = 0; col < 8; col++) {
+        const square = board[row][col];
+        
+        // Calculate contentionVolume - total threats from both sides
+        square.contentionVolume = square.whiteThreatCount + square.blackThreatCount;
+        
+        // Calculate contentionRatio - balance of control
+        if (square.contentionVolume === 0) {
+          square.contentionRatio = 0; // No contention
+        } else {
+          square.contentionRatio = (square.whiteThreatCount - square.blackThreatCount) / square.contentionVolume;
         }
       }
     }

@@ -1,0 +1,385 @@
+.info-panel {
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  padding: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 0;
+  width: 100%;
+}
+
+.info-panel h2 {
+  margin-top: 0;
+  margin-bottom: 8px;
+  color: #333;
+  font-size: 1rem;
+}
+
+.info-panel h3 {
+  font-size: 0.85rem;
+  margin-top: 0;
+  margin-bottom: 4px;
+  color: #444;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 2px;
+}
+
+.info-panel h4 {
+  font-size: 0.75rem;
+  margin: 0 0 4px 0;
+  color: #555;
+  border-bottom: 1px dotted #ddd;
+  padding-bottom: 2px;
+}
+
+.info-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.control-buttons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.control-button {
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
+  font-size: 0.8rem;
+}
+
+.reset-button {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.reset-button:hover {
+  background-color: #c0392b;
+}
+
+.toggle-container {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.toggle-container input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 28px;
+  height: 14px;
+  background-color: #ccc;
+  border-radius: 14px;
+  transition: background-color 0.2s;
+}
+
+.toggle-switch:after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: white;
+  top: 2px;
+  left: 2px;
+  transition: 0.2s;
+}
+
+input:checked + .toggle-switch {
+  background-color: #2196F3;
+}
+
+input:checked + .toggle-switch:after {
+  left: calc(100% - 12px);
+}
+
+/* New grid layout for the 2 panels */
+.info-panel-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  height: 180px; /* Fixed height to prevent layout flickering */
+}
+
+.info-subpanel {
+  background-color: white;
+  padding: 6px;
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Square details container */
+.square-details-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 100%;
+  overflow: hidden;
+}
+
+.square-details-container.empty {
+  justify-content: center;
+  align-items: center;
+  color: #999;
+  font-style: italic;
+  font-size: 0.75rem;
+}
+
+/* Square info section */
+.square-info {
+  padding: 4px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid #eee;
+  flex-shrink: 0;
+}
+
+/* Piece info section */
+.piece-info {
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow: auto;
+}
+
+/* Panel content styling */
+.panel-content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-height: 30px;
+}
+
+.panel-content.empty {
+  justify-content: center;
+  align-items: center;
+  color: #999;
+  font-style: italic;
+  font-size: 0.75rem;
+  height: 100%;
+}
+
+.panel-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+/* Square indicator */
+.square-indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  background-color: #e0e0e0;
+  color: #333;
+  border: 2px solid transparent;
+  flex-shrink: 0;
+}
+
+.square-indicator.selected {
+  border-color: #333;
+}
+
+/* Piece indicator */
+.piece-indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-weight: bold;
+  font-size: 0.9rem;
+  background-color: #e0e0e0;
+  color: #333;
+  border: 2px solid transparent;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.piece-indicator.white {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.piece-indicator.black {
+  background-color: #555;
+  color: #fff;
+}
+
+.piece-indicator.selected {
+  border-color: #333;
+}
+
+/* State colors */
+.state-check {
+  background-color: #e74c3c !important;
+  color: white !important;
+}
+
+.state-threatened {
+  background-color: #e67e22 !important;
+  color: white !important;
+}
+
+.state-protected {
+  background-color: #3498db !important;
+  color: white !important;
+}
+
+.state-contested {
+  background-color: #9b59b6 !important;
+  color: white !important;
+}
+
+.state-neutral {
+  background-color: #2ecc71 !important;
+  color: white !important;
+}
+
+.state-threatener {
+  border-color: #e67e22 !important;
+  border-width: 2px !important;
+}
+
+.state-protector {
+  border-color: #3498db !important;
+  border-width: 2px !important;
+}
+
+/* Details sections */
+.square-details, .piece-details {
+  font-size: 0.75rem;
+  flex-grow: 1;
+}
+
+.square-details p, .piece-details p {
+  margin: 0 0 2px 0;
+  line-height: 1.3;
+}
+
+/* New styles for detailed information */
+.detail-heading {
+  font-weight: 500;
+  margin-bottom: 4px !important;
+  border-bottom: 1px dotted #ddd;
+  padding-bottom: 2px;
+}
+
+.detail-heading strong {
+  font-weight: 700;
+  color: #333;
+}
+
+.label {
+  font-weight: 500;
+  color: #555;
+  margin-right: 4px;
+  min-width: 60px;
+  display: inline-block;
+}
+
+.value {
+  color: #333;
+}
+
+.white-count {
+  color: #2980b9;
+  font-weight: 500;
+  margin-right: 4px;
+}
+
+.black-count {
+  color: #c0392b;
+  font-weight: 500;
+  margin-left: 4px;
+}
+
+/* Different piece types */
+.piece-indicator.pawn::after {
+  content: "♟";
+  position: absolute;
+  font-size: 1rem;
+  opacity: 0.3;
+}
+
+.piece-indicator.knight::after {
+  content: "♞";
+  position: absolute;
+  font-size: 1rem;
+  opacity: 0.3;
+}
+
+.piece-indicator.bishop::after {
+  content: "♝";
+  position: absolute;
+  font-size: 1rem;
+  opacity: 0.3;
+}
+
+.piece-indicator.rook::after {
+  content: "♜";
+  position: absolute;
+  font-size: 1rem;
+  opacity: 0.3;
+}
+
+.piece-indicator.queen::after {
+  content: "♛";
+  position: absolute;
+  font-size: 1rem;
+  opacity: 0.3;
+}
+
+.piece-indicator.king::after {
+  content: "♚";
+  position: absolute;
+  font-size: 1rem;
+  opacity: 0.3;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .info-panel-grid {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+  
+  .info-subpanel {
+    height: 180px;
+  }
+  
+  .info-panel-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .control-buttons {
+    margin-top: 4px;
+    width: 100%;
+    justify-content: space-between;
+  }
+} 

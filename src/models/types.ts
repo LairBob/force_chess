@@ -36,7 +36,11 @@ export interface Piece {
 // Square state on the board
 export interface Square {
   position: Position;
+  file: string; // Chess file (a-h)
+  rank: number; // Chess rank (1-8)
+  color: PlayerColor; // Color of the square (white or black)
   piece: Piece | null;
+  hasPiece: boolean; // Whether this square has a piece on it
   isLegalMove: boolean;
   isSelected: boolean;
   isCheck: boolean;
@@ -49,6 +53,8 @@ export interface Square {
   isNeutralDestination: boolean;
   whiteThreatCount: number; // Number of white pieces threatening this square
   blackThreatCount: number; // Number of black pieces threatening this square
+  contentionVolume: number; // Total number of threats from both sides (white + black)
+  contentionRatio: number; // Ratio of control balance: (white - black) / (white + black), range [-1, 1]
 }
 
 // Game state

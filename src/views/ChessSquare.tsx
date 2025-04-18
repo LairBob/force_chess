@@ -1,78 +1,67 @@
 import React from 'react';
-import { Square } from '../models/types';
+import { Square, Piece, PlayerColor } from '../models/types';
 import ChessPiece from './ChessPiece';
 import ThreatIndicator from './ThreatIndicator';
 import './ChessSquare.css';
 
 interface ChessSquareProps {
   square: Square;
-  onClick: () => void;
-  onMouseEnter: () => void;
-  onMouseLeave: () => void;
+  isSelected?: boolean;
   showThreats?: boolean;
+  onClick: (square: Square) => void;
+  onMouseEnter: (square: Square) => void;
+  onMouseLeave?: () => void;
 }
 
 const ChessSquare: React.FC<ChessSquareProps> = ({
   square,
+  isSelected = false,
+  showThreats = false,
   onClick,
   onMouseEnter,
   onMouseLeave,
-  showThreats = true
 }) => {
-  const { row, col } = square.position;
-  
-  // Determine if this is a light or dark square
-  const isLightSquare = (row + col) % 2 === 0;
-  
-  // Get the destination state for possible moves
-  let destinationState = '';
-  if (square.isPossibleMove) {
-    if (square.isContestedDestination) {
-      destinationState = 'contested';
-    } else if (square.isThreatenedDestination) {
-      destinationState = 'threatened';
-    } else if (square.isProtectedDestination) {
-      destinationState = 'protected';
-    } else if (square.isNeutralDestination) {
-      destinationState = 'neutral';
+  // Determine the CSS classes to apply to the square
+  const getSquareClasses = (): string => {
+    const classes = ['chess-square'];
+    
+    // Add color class based on square color
+    classes.push(square.color === PlayerColor.WHITE ? 'white-square' : 'black-square');
+    
+    // Add selected class if the square is selected
+    if (isSelected) {
+      classes.push('selected-square');
     }
-  }
-  
-  // Build CSS classes for square states
-  const squareClasses = [
-    'chess-square',
-    isLightSquare ? 'light-square' : 'dark-square',
-    square.isSelected ? 'selected' : '',
-    square.isLegalMove ? 'legal-move' : '',
-    square.isPossibleMove ? 'possible-move' : '',
-    destinationState, // Add the specific state class
-    square.isCheck ? 'check' : '',
-    square.isHovered ? 'hovered' : ''
-  ].filter(Boolean).join(' ');
+    
+    return classes.join(' ');
+  };
 
-  // Determine if this square has any threats
-  const hasThreat = square.whiteThreatCount > 0 || square.blackThreatCount > 0;
+  const handleClick = () => {
+    onClick(square);
+  };
+
+  const handleMouseEnter = () => {
+    onMouseEnter(square);
+  };
 
   return (
-    <div 
-      className={squareClasses}
-      onClick={onClick}
-      onMouseEnter={onMouseEnter}
+    <div
+      className={getSquareClasses()}
+      onClick={handleClick}
+      onMouseEnter={handleMouseEnter}
       onMouseLeave={onMouseLeave}
+      data-square-id={`${square.file}${square.rank}`}
     >
-      {square.piece && <ChessPiece piece={square.piece} />}
+      {square.hasPiece && square.piece && (
+        <ChessPiece piece={square.piece} />
+      )}
       
-      {/* Visual indicators for different states */}
-      {square.isLegalMove && !square.piece && <div className="legal-move-indicator" />}
-      {square.isCheck && <div className="check-indicator" />}
-      
-      {/* Threat indicator */}
-      {showThreats && hasThreat && 
-        <ThreatIndicator 
+      {showThreats && (
+        <ThreatIndicator
           whiteThreatCount={square.whiteThreatCount}
           blackThreatCount={square.blackThreatCount}
         />
-      }
+      )}
     </div>
   );
 };

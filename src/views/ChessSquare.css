@@ -9,24 +9,60 @@
   transition: all 0.2s;
 }
 
-.light-square {
+/* Standard chess board colors */
+.white-square {
   background-color: #f0d9b5;
 }
 
-.dark-square {
+.black-square {
   background-color: #b58863;
 }
 
-.selected {
-  box-shadow: inset 0 0 0 3px #3498db;
+.selected-square {
+  box-shadow: inset 0 0 0 3px rgba(52, 152, 219, 0.7);
 }
 
-.hovered:not(.selected) {
-  box-shadow: inset 0 0 0 2px rgba(52, 152, 219, 0.5);
+.hoverable:hover:not(.selected-square) {
+  box-shadow: inset 0 0 0 2px rgba(52, 152, 219, 0.3);
 }
 
 .legal-move {
-  background-color: rgba(144, 238, 144, 0.3);
+  position: relative;
+}
+
+.legal-move::after {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: rgba(0, 128, 0, 0.3);
+  z-index: 1;
+}
+
+/* Threatener and protector indicators use border styling instead of background */
+.threatener-square {
+  box-shadow: inset 0 0 0 2px rgba(255, 100, 100, 0.6);
+}
+
+.protector-square {
+  box-shadow: inset 0 0 0 2px rgba(100, 100, 255, 0.6);
+}
+
+/* Hide coordinate labels */
+.coordinate-label {
+  display: none;
+}
+
+/* Check indicator */
+.check-indicator {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border: 3px solid rgba(255, 0, 0, 0.7);
+  z-index: 1;
 }
 
 /* Basic possible move style */
@@ -63,13 +99,4 @@
   height: 16px;
   border-radius: 50%;
   background-color: rgba(0, 128, 0, 0.5);
-}
-
-.check-indicator {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  border: 3px solid rgba(255, 0, 0, 0.7);
 } 

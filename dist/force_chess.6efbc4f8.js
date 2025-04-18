@@ -24959,48 +24959,218 @@ var _react = require("react");
 var _reactDefault = parcelHelpers.interopDefault(_react);
 var _chessGame = require("./views/ChessGame");
 var _chessGameDefault = parcelHelpers.interopDefault(_chessGame);
+var _infoPanel = require("./views/InfoPanel");
+var _infoPanelDefault = parcelHelpers.interopDefault(_infoPanel);
 var _gameController = require("./controllers/GameController");
 var _chessModel = require("./models/ChessModel");
+var _layoutCss = require("./styles/Layout.css");
+var _s = $RefreshSig$();
+// Placeholder components for the new layout structure
+const GameTranscription = ()=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+        className: "panel-content",
+        children: [
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h2", {
+                children: "Game Transcription"
+            }, void 0, false, {
+                fileName: "src/App.tsx",
+                lineNumber: 11,
+                columnNumber: 5
+            }, undefined),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                children: "Will eventually display a log of the current game's moves, using standard notation."
+            }, void 0, false, {
+                fileName: "src/App.tsx",
+                lineNumber: 12,
+                columnNumber: 5
+            }, undefined)
+        ]
+    }, void 0, true, {
+        fileName: "src/App.tsx",
+        lineNumber: 10,
+        columnNumber: 3
+    }, undefined);
+_c = GameTranscription;
+const DisplayOptions = ()=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+        className: "panel-content",
+        children: [
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h2", {
+                children: "Display Options"
+            }, void 0, false, {
+                fileName: "src/App.tsx",
+                lineNumber: 18,
+                columnNumber: 5
+            }, undefined),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                children: "Will eventually be an interactive tabbed panel, offering gesture flags and config options for visual display."
+            }, void 0, false, {
+                fileName: "src/App.tsx",
+                lineNumber: 19,
+                columnNumber: 5
+            }, undefined)
+        ]
+    }, void 0, true, {
+        fileName: "src/App.tsx",
+        lineNumber: 17,
+        columnNumber: 3
+    }, undefined);
+_c1 = DisplayOptions;
 function App() {
+    _s();
     // Initialize our model
     const chessModel = new (0, _chessModel.ChessModel)();
     // Initialize our controller with the model
     const gameController = new (0, _gameController.GameController)(chessModel);
+    // Initialize state for game and interaction
+    const [gameState, setGameState] = (0, _react.useState)(gameController.getGameState());
+    const [interactionState, setInteractionState] = (0, _react.useState)(gameController.getInteractionState());
+    (0, _react.useEffect)(()=>{
+        // Register for updates from the controller
+        const unsubscribe = gameController.registerView(()=>{
+            setGameState(gameController.getGameState());
+            setInteractionState(gameController.getInteractionState());
+        });
+        // Cleanup on unmount
+        return unsubscribe;
+    }, [
+        gameController
+    ]);
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
         className: "app-container",
         children: [
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h1", {
-                children: "Force Chess"
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                className: "app-header",
+                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h1", {
+                    children: "Force Chess"
+                }, void 0, false, {
+                    fileName: "src/App.tsx",
+                    lineNumber: 48,
+                    columnNumber: 9
+                }, this)
             }, void 0, false, {
                 fileName: "src/App.tsx",
-                lineNumber: 15,
+                lineNumber: 47,
                 columnNumber: 7
             }, this),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _chessGameDefault.default), {
-                controller: gameController
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                className: "game-transcription",
+                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(GameTranscription, {}, void 0, false, {
+                    fileName: "src/App.tsx",
+                    lineNumber: 52,
+                    columnNumber: 9
+                }, this)
             }, void 0, false, {
                 fileName: "src/App.tsx",
-                lineNumber: 16,
+                lineNumber: 51,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                className: "chess-board-wrapper",
+                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _chessGameDefault.default), {
+                    controller: gameController
+                }, void 0, false, {
+                    fileName: "src/App.tsx",
+                    lineNumber: 56,
+                    columnNumber: 9
+                }, this)
+            }, void 0, false, {
+                fileName: "src/App.tsx",
+                lineNumber: 55,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                className: "game-control-panel",
+                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                    className: "panel-content",
+                    children: [
+                        /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h2", {
+                            children: "Game Control Panel"
+                        }, void 0, false, {
+                            fileName: "src/App.tsx",
+                            lineNumber: 61,
+                            columnNumber: 11
+                        }, this),
+                        /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                            className: "game-button",
+                            disabled: true,
+                            children: "Undo Last Move"
+                        }, void 0, false, {
+                            fileName: "src/App.tsx",
+                            lineNumber: 62,
+                            columnNumber: 11
+                        }, this),
+                        /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                            className: "game-button",
+                            onClick: ()=>gameController.resetGame(),
+                            children: "Reset Game"
+                        }, void 0, false, {
+                            fileName: "src/App.tsx",
+                            lineNumber: 63,
+                            columnNumber: 11
+                        }, this)
+                    ]
+                }, void 0, true, {
+                    fileName: "src/App.tsx",
+                    lineNumber: 60,
+                    columnNumber: 9
+                }, this)
+            }, void 0, false, {
+                fileName: "src/App.tsx",
+                lineNumber: 59,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                className: "display-options",
+                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(DisplayOptions, {}, void 0, false, {
+                    fileName: "src/App.tsx",
+                    lineNumber: 68,
+                    columnNumber: 9
+                }, this)
+            }, void 0, false, {
+                fileName: "src/App.tsx",
+                lineNumber: 67,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                className: "info-panel-wrapper",
+                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _infoPanelDefault.default), {
+                    board: gameState.board,
+                    hoveredSquare: interactionState.hoveredSquare,
+                    selectedSquare: interactionState.selectedSquare,
+                    currentPlayer: gameState.currentPlayer,
+                    showThreats: interactionState.showThreats,
+                    onToggleThreats: ()=>gameController.toggleThreatIndicators(),
+                    onResetGame: ()=>gameController.resetGame()
+                }, void 0, false, {
+                    fileName: "src/App.tsx",
+                    lineNumber: 72,
+                    columnNumber: 9
+                }, this)
+            }, void 0, false, {
+                fileName: "src/App.tsx",
+                lineNumber: 71,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "src/App.tsx",
-        lineNumber: 14,
+        lineNumber: 46,
         columnNumber: 5
     }, this);
 }
-_c = App;
+_s(App, "VCsmUDrFlS5mbm6nnG+HZUyGEmI=");
+_c2 = App;
 exports.default = App;
-var _c;
-$RefreshReg$(_c, "App");
+var _c, _c1, _c2;
+$RefreshReg$(_c, "GameTranscription");
+$RefreshReg$(_c1, "DisplayOptions");
+$RefreshReg$(_c2, "App");
 
   $parcel$ReactRefreshHelpers$161e.postlude(module);
 } finally {
   globalThis.$RefreshReg$ = prevRefreshReg;
   globalThis.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","./views/ChessGame":"2bITr","./controllers/GameController":"hUfa8","./models/ChessModel":"1toZu","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"2bITr":[function(require,module,exports,__globalThis) {
+},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","./views/ChessGame":"2bITr","./views/InfoPanel":"kdQOX","./controllers/GameController":"hUfa8","./models/ChessModel":"1toZu","./styles/Layout.css":"cBIeL","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"2bITr":[function(require,module,exports,__globalThis) {
 var $parcel$ReactRefreshHelpers$0d9f = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
 $parcel$ReactRefreshHelpers$0d9f.init();
 var prevRefreshReg = globalThis.$RefreshReg$;
@@ -25015,8 +25185,6 @@ var _react = require("react");
 var _reactDefault = parcelHelpers.interopDefault(_react);
 var _chessBoard = require("./ChessBoard");
 var _chessBoardDefault = parcelHelpers.interopDefault(_chessBoard);
-var _gameInfo = require("./GameInfo");
-var _gameInfoDefault = parcelHelpers.interopDefault(_gameInfo);
 var _chessGameCss = require("./ChessGame.css");
 var _s = $RefreshSig$();
 const ChessGame = ({ controller })=>{
@@ -25036,37 +25204,20 @@ const ChessGame = ({ controller })=>{
     ]);
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
         className: "chess-game",
-        children: [
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _chessBoardDefault.default), {
-                board: gameState.board,
-                interactionState: interactionState,
-                onSquareClick: (position)=>controller.handleSquareClick(position),
-                onSquareHover: (position)=>controller.handleSquareHover(position),
-                onSquareLeave: ()=>controller.handleSquareLeave()
-            }, void 0, false, {
-                fileName: "src/views/ChessGame.tsx",
-                lineNumber: 31,
-                columnNumber: 7
-            }, undefined),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _gameInfoDefault.default), {
-                currentPlayer: gameState.currentPlayer,
-                isCheck: gameState.isCheck,
-                isCheckmate: gameState.isCheckmate,
-                isStalemate: gameState.isStalemate,
-                moveHistory: gameState.moveHistory,
-                capturedPieces: gameState.capturedPieces,
-                onResetGame: ()=>controller.resetGame(),
-                showThreats: interactionState.showThreats,
-                onToggleThreats: ()=>controller.toggleThreatIndicators()
-            }, void 0, false, {
-                fileName: "src/views/ChessGame.tsx",
-                lineNumber: 38,
-                columnNumber: 7
-            }, undefined)
-        ]
-    }, void 0, true, {
+        children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _chessBoardDefault.default), {
+            board: gameState.board,
+            interactionState: interactionState,
+            onSquareClick: (position)=>controller.handleSquareClick(position),
+            onSquareHover: (position)=>controller.handleSquareHover(position),
+            onSquareLeave: ()=>controller.handleSquareLeave()
+        }, void 0, false, {
+            fileName: "src/views/ChessGame.tsx",
+            lineNumber: 30,
+            columnNumber: 7
+        }, undefined)
+    }, void 0, false, {
         fileName: "src/views/ChessGame.tsx",
-        lineNumber: 30,
+        lineNumber: 29,
         columnNumber: 5
     }, undefined);
 };
@@ -25081,7 +25232,7 @@ $RefreshReg$(_c, "ChessGame");
   globalThis.$RefreshReg$ = prevRefreshReg;
   globalThis.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","./ChessBoard":"58Sz1","./GameInfo":"c6v3S","./ChessGame.css":"eFg4c","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"58Sz1":[function(require,module,exports,__globalThis) {
+},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","./ChessBoard":"58Sz1","./ChessGame.css":"eFg4c","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"58Sz1":[function(require,module,exports,__globalThis) {
 var $parcel$ReactRefreshHelpers$aafc = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
 $parcel$ReactRefreshHelpers$aafc.init();
 var prevRefreshReg = globalThis.$RefreshReg$;
@@ -25219,75 +25370,56 @@ parcelHelpers.defineInteropFlag(exports);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _react = require("react");
 var _reactDefault = parcelHelpers.interopDefault(_react);
+var _types = require("../models/types");
 var _chessPiece = require("./ChessPiece");
 var _chessPieceDefault = parcelHelpers.interopDefault(_chessPiece);
 var _threatIndicator = require("./ThreatIndicator");
 var _threatIndicatorDefault = parcelHelpers.interopDefault(_threatIndicator);
 var _chessSquareCss = require("./ChessSquare.css");
-const ChessSquare = ({ square, onClick, onMouseEnter, onMouseLeave, showThreats = true })=>{
-    const { row, col } = square.position;
-    // Determine if this is a light or dark square
-    const isLightSquare = (row + col) % 2 === 0;
-    // Get the destination state for possible moves
-    let destinationState = '';
-    if (square.isPossibleMove) {
-        if (square.isContestedDestination) destinationState = 'contested';
-        else if (square.isThreatenedDestination) destinationState = 'threatened';
-        else if (square.isProtectedDestination) destinationState = 'protected';
-        else if (square.isNeutralDestination) destinationState = 'neutral';
-    }
-    // Build CSS classes for square states
-    const squareClasses = [
-        'chess-square',
-        isLightSquare ? 'light-square' : 'dark-square',
-        square.isSelected ? 'selected' : '',
-        square.isLegalMove ? 'legal-move' : '',
-        square.isPossibleMove ? 'possible-move' : '',
-        destinationState,
-        square.isCheck ? 'check' : '',
-        square.isHovered ? 'hovered' : ''
-    ].filter(Boolean).join(' ');
-    // Determine if this square has any threats
-    const hasThreat = square.whiteThreatCount > 0 || square.blackThreatCount > 0;
+const ChessSquare = ({ square, isSelected = false, showThreats = false, onClick, onMouseEnter, onMouseLeave })=>{
+    // Determine the CSS classes to apply to the square
+    const getSquareClasses = ()=>{
+        const classes = [
+            'chess-square'
+        ];
+        // Add color class based on square color
+        classes.push(square.color === (0, _types.PlayerColor).WHITE ? 'white-square' : 'black-square');
+        // Add selected class if the square is selected
+        if (isSelected) classes.push('selected-square');
+        return classes.join(' ');
+    };
+    const handleClick = ()=>{
+        onClick(square);
+    };
+    const handleMouseEnter = ()=>{
+        onMouseEnter(square);
+    };
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-        className: squareClasses,
-        onClick: onClick,
-        onMouseEnter: onMouseEnter,
+        className: getSquareClasses(),
+        onClick: handleClick,
+        onMouseEnter: handleMouseEnter,
         onMouseLeave: onMouseLeave,
+        "data-square-id": `${square.file}${square.rank}`,
         children: [
-            square.piece && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _chessPieceDefault.default), {
+            square.hasPiece && square.piece && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _chessPieceDefault.default), {
                 piece: square.piece
             }, void 0, false, {
                 fileName: "src/views/ChessSquare.tsx",
-                lineNumber: 63,
-                columnNumber: 24
+                lineNumber: 56,
+                columnNumber: 9
             }, undefined),
-            square.isLegalMove && !square.piece && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-                className: "legal-move-indicator"
-            }, void 0, false, {
-                fileName: "src/views/ChessSquare.tsx",
-                lineNumber: 66,
-                columnNumber: 47
-            }, undefined),
-            square.isCheck && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-                className: "check-indicator"
-            }, void 0, false, {
-                fileName: "src/views/ChessSquare.tsx",
-                lineNumber: 67,
-                columnNumber: 26
-            }, undefined),
-            showThreats && hasThreat && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _threatIndicatorDefault.default), {
+            showThreats && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _threatIndicatorDefault.default), {
                 whiteThreatCount: square.whiteThreatCount,
                 blackThreatCount: square.blackThreatCount
             }, void 0, false, {
                 fileName: "src/views/ChessSquare.tsx",
-                lineNumber: 71,
+                lineNumber: 60,
                 columnNumber: 9
             }, undefined)
         ]
     }, void 0, true, {
         fileName: "src/views/ChessSquare.tsx",
-        lineNumber: 57,
+        lineNumber: 48,
         columnNumber: 5
     }, undefined);
 };
@@ -25301,7 +25433,58 @@ $RefreshReg$(_c, "ChessSquare");
   globalThis.$RefreshReg$ = prevRefreshReg;
   globalThis.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","./ChessPiece":"j0K39","./ThreatIndicator":"2CVhi","./ChessSquare.css":"iWwCQ","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"j0K39":[function(require,module,exports,__globalThis) {
+},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","../models/types":"hEtH3","./ChessPiece":"j0K39","./ThreatIndicator":"2CVhi","./ChessSquare.css":"iWwCQ","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"hEtH3":[function(require,module,exports,__globalThis) {
+// Chess piece types
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "PieceType", ()=>PieceType);
+parcelHelpers.export(exports, "PlayerColor", ()=>PlayerColor);
+var PieceType = /*#__PURE__*/ function(PieceType) {
+    PieceType["PAWN"] = "pawn";
+    PieceType["KNIGHT"] = "knight";
+    PieceType["BISHOP"] = "bishop";
+    PieceType["ROOK"] = "rook";
+    PieceType["QUEEN"] = "queen";
+    PieceType["KING"] = "king";
+    return PieceType;
+}({});
+var PlayerColor = /*#__PURE__*/ function(PlayerColor) {
+    PlayerColor["WHITE"] = "white";
+    PlayerColor["BLACK"] = "black";
+    return PlayerColor;
+}({});
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"jnFvT":[function(require,module,exports,__globalThis) {
+exports.interopDefault = function(a) {
+    return a && a.__esModule ? a : {
+        default: a
+    };
+};
+exports.defineInteropFlag = function(a) {
+    Object.defineProperty(a, '__esModule', {
+        value: true
+    });
+};
+exports.exportAll = function(source, dest) {
+    Object.keys(source).forEach(function(key) {
+        if (key === 'default' || key === '__esModule' || Object.prototype.hasOwnProperty.call(dest, key)) return;
+        Object.defineProperty(dest, key, {
+            enumerable: true,
+            get: function() {
+                return source[key];
+            }
+        });
+    });
+    return dest;
+};
+exports.export = function(dest, destName, get) {
+    Object.defineProperty(dest, destName, {
+        enumerable: true,
+        get: get
+    });
+};
+
+},{}],"j0K39":[function(require,module,exports,__globalThis) {
 var $parcel$ReactRefreshHelpers$275d = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
 $parcel$ReactRefreshHelpers$275d.init();
 var prevRefreshReg = globalThis.$RefreshReg$;
@@ -25383,58 +25566,7 @@ $RefreshReg$(_c, "ChessPiece");
   globalThis.$RefreshReg$ = prevRefreshReg;
   globalThis.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","../models/types":"hEtH3","./ChessPiece.css":"hBGWn","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"hEtH3":[function(require,module,exports,__globalThis) {
-// Chess piece types
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "PieceType", ()=>PieceType);
-parcelHelpers.export(exports, "PlayerColor", ()=>PlayerColor);
-var PieceType = /*#__PURE__*/ function(PieceType) {
-    PieceType["PAWN"] = "pawn";
-    PieceType["KNIGHT"] = "knight";
-    PieceType["BISHOP"] = "bishop";
-    PieceType["ROOK"] = "rook";
-    PieceType["QUEEN"] = "queen";
-    PieceType["KING"] = "king";
-    return PieceType;
-}({});
-var PlayerColor = /*#__PURE__*/ function(PlayerColor) {
-    PlayerColor["WHITE"] = "white";
-    PlayerColor["BLACK"] = "black";
-    return PlayerColor;
-}({});
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"jnFvT":[function(require,module,exports,__globalThis) {
-exports.interopDefault = function(a) {
-    return a && a.__esModule ? a : {
-        default: a
-    };
-};
-exports.defineInteropFlag = function(a) {
-    Object.defineProperty(a, '__esModule', {
-        value: true
-    });
-};
-exports.exportAll = function(source, dest) {
-    Object.keys(source).forEach(function(key) {
-        if (key === 'default' || key === '__esModule' || Object.prototype.hasOwnProperty.call(dest, key)) return;
-        Object.defineProperty(dest, key, {
-            enumerable: true,
-            get: function() {
-                return source[key];
-            }
-        });
-    });
-    return dest;
-};
-exports.export = function(dest, destName, get) {
-    Object.defineProperty(dest, destName, {
-        enumerable: true,
-        get: get
-    });
-};
-
-},{}],"hBGWn":[function() {},{}],"7h6Pi":[function(require,module,exports,__globalThis) {
+},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","../models/types":"hEtH3","./ChessPiece.css":"hBGWn","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"hBGWn":[function() {},{}],"7h6Pi":[function(require,module,exports,__globalThis) {
 "use strict";
 var Refresh = require("7422ead32dcc1e6b");
 function debounce(func, delay) {
@@ -27771,12 +27903,12 @@ $RefreshReg$(_c, "ThreatIndicator");
   globalThis.$RefreshReg$ = prevRefreshReg;
   globalThis.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","./ThreatIndicator.css":"1uRxT","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"1uRxT":[function() {},{}],"iWwCQ":[function() {},{}],"4spqF":[function() {},{}],"c6v3S":[function(require,module,exports,__globalThis) {
-var $parcel$ReactRefreshHelpers$9e72 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
-$parcel$ReactRefreshHelpers$9e72.init();
+},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","./ThreatIndicator.css":"1uRxT","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"1uRxT":[function() {},{}],"iWwCQ":[function() {},{}],"4spqF":[function() {},{}],"eFg4c":[function() {},{}],"kdQOX":[function(require,module,exports,__globalThis) {
+var $parcel$ReactRefreshHelpers$dd7e = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+$parcel$ReactRefreshHelpers$dd7e.init();
 var prevRefreshReg = globalThis.$RefreshReg$;
 var prevRefreshSig = globalThis.$RefreshSig$;
-$parcel$ReactRefreshHelpers$9e72.prelude(module);
+$parcel$ReactRefreshHelpers$dd7e.prelude(module);
 
 try {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -27784,177 +27916,762 @@ parcelHelpers.defineInteropFlag(exports);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _react = require("react");
 var _reactDefault = parcelHelpers.interopDefault(_react);
-var _types = require("../models/types");
-var _gameInfoCss = require("./GameInfo.css");
-const GameInfo = ({ currentPlayer, isCheck, isCheckmate, isStalemate, moveHistory, capturedPieces, onResetGame, showThreats, onToggleThreats })=>{
-    // Format a move for display in the move history
-    const formatMove = (move, index)=>{
-        const pieceSymbol = move.piece.type.charAt(0).toUpperCase();
-        const from = `${String.fromCharCode(97 + move.from.col)}${8 - move.from.row}`;
-        const to = `${String.fromCharCode(97 + move.to.col)}${8 - move.to.row}`;
-        let notation = `${pieceSymbol}${from}-${to}`;
-        if (move.capturedPiece) notation += 'x';
-        if (move.isCheck) notation += '+';
-        if (move.isCheckmate) notation += '#';
-        return `${Math.floor(index / 2) + 1}${index % 2 === 0 ? '.' : '...'} ${notation}`;
+var _infoPanelCss = require("./InfoPanel.css");
+const InfoPanel = ({ board, hoveredSquare, selectedSquare, currentPlayer, showThreats, onToggleThreats, onResetGame })=>{
+    // Helper function to get the chess notation for a position
+    const getPositionNotation = (position)=>{
+        const file = String.fromCharCode(97 + position.col); // a-h
+        const rank = 8 - position.row; // 1-8
+        return `${file}${rank}`;
     };
-    // Get game status message
-    const getStatusMessage = ()=>{
-        if (isCheckmate) {
-            const winner = currentPlayer === (0, _types.PlayerColor).WHITE ? 'Black' : 'White';
-            return `Checkmate! ${winner} wins!`;
-        } else if (isStalemate) return 'Stalemate! The game is a draw.';
-        else if (isCheck) return `${currentPlayer} is in check!`;
-        else return `${currentPlayer}'s turn`;
+    // Format a number to 2 decimal places for display
+    const formatNumber = (num)=>{
+        return num.toFixed(2);
     };
-    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-        className: "game-info",
-        children: [
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-                className: "game-status",
-                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h2", {
-                    children: getStatusMessage()
-                }, void 0, false, {
-                    fileName: "src/views/GameInfo.tsx",
-                    lineNumber: 68,
-                    columnNumber: 9
-                }, undefined)
+    // Helper function to get square state classes
+    const getSquareStateClass = (square)=>{
+        if (square.isCheck) return 'state-check';
+        if (square.isThreatenedDestination) return 'state-threatened';
+        if (square.isProtectedDestination) return 'state-protected';
+        if (square.isContestedDestination) return 'state-contested';
+        if (square.isNeutralDestination) return 'state-neutral';
+        return '';
+    };
+    // Helper function to get piece state classes
+    const getPieceStateClass = (piece)=>{
+        if (piece.isThreatened && piece.isProtected) return 'state-contested';
+        if (piece.isThreatened) return 'state-threatened';
+        if (piece.isProtected) return 'state-protected';
+        if (piece.isThreatener) return 'state-threatener';
+        if (piece.isProtector) return 'state-protector';
+        return '';
+    };
+    // Determine content for hovered piece panel
+    const hoveredPiecePanel = ()=>{
+        if (!hoveredSquare || !board[hoveredSquare.row][hoveredSquare.col].piece) return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+            className: "panel-content empty",
+            children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                children: "No piece hovered"
             }, void 0, false, {
-                fileName: "src/views/GameInfo.tsx",
-                lineNumber: 67,
-                columnNumber: 7
-            }, undefined),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-                className: "button-row",
+                fileName: "src/views/InfoPanel.tsx",
+                lineNumber: 61,
+                columnNumber: 11
+            }, undefined)
+        }, void 0, false, {
+            fileName: "src/views/InfoPanel.tsx",
+            lineNumber: 60,
+            columnNumber: 9
+        }, undefined);
+        const piece = board[hoveredSquare.row][hoveredSquare.col].piece;
+        const stateClass = getPieceStateClass(piece);
+        const notation = getPositionNotation(piece.position);
+        // Create an array of piece states
+        const states = [];
+        if (piece.isThreatened) states.push("Threatened");
+        if (piece.isProtected) states.push("Protected");
+        if (piece.isThreatener) states.push("Threatening");
+        if (piece.isProtector) states.push("Protecting");
+        return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+            className: "panel-content",
+            children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                className: "panel-row",
                 children: [
-                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
-                        className: "game-button",
-                        onClick: onResetGame,
-                        children: "New Game"
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                        className: `piece-indicator ${piece.color} ${piece.type} ${stateClass}`,
+                        children: piece.type.charAt(0).toUpperCase()
                     }, void 0, false, {
-                        fileName: "src/views/GameInfo.tsx",
-                        lineNumber: 72,
-                        columnNumber: 9
+                        fileName: "src/views/InfoPanel.tsx",
+                        lineNumber: 80,
+                        columnNumber: 11
                     }, undefined),
-                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
-                        className: "game-button",
-                        onClick: onToggleThreats,
-                        children: showThreats ? 'Hide Threats' : 'Show Threats'
-                    }, void 0, false, {
-                        fileName: "src/views/GameInfo.tsx",
-                        lineNumber: 75,
-                        columnNumber: 9
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                        className: "piece-details",
+                        children: [
+                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                                className: "detail-heading",
+                                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
+                                    children: [
+                                        piece.color,
+                                        " ",
+                                        piece.type
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "src/views/InfoPanel.tsx",
+                                    lineNumber: 84,
+                                    columnNumber: 43
+                                }, undefined)
+                            }, void 0, false, {
+                                fileName: "src/views/InfoPanel.tsx",
+                                lineNumber: 84,
+                                columnNumber: 13
+                            }, undefined),
+                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                                children: [
+                                    "Position: ",
+                                    notation
+                                ]
+                            }, void 0, true, {
+                                fileName: "src/views/InfoPanel.tsx",
+                                lineNumber: 85,
+                                columnNumber: 13
+                            }, undefined),
+                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                                children: [
+                                    "Status: ",
+                                    states.length > 0 ? states.join(", ") : "Normal"
+                                ]
+                            }, void 0, true, {
+                                fileName: "src/views/InfoPanel.tsx",
+                                lineNumber: 86,
+                                columnNumber: 13
+                            }, undefined),
+                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                                children: [
+                                    "Moved: ",
+                                    piece.hasMoved ? "Yes" : "No"
+                                ]
+                            }, void 0, true, {
+                                fileName: "src/views/InfoPanel.tsx",
+                                lineNumber: 87,
+                                columnNumber: 13
+                            }, undefined)
+                        ]
+                    }, void 0, true, {
+                        fileName: "src/views/InfoPanel.tsx",
+                        lineNumber: 83,
+                        columnNumber: 11
                     }, undefined)
                 ]
             }, void 0, true, {
-                fileName: "src/views/GameInfo.tsx",
-                lineNumber: 71,
-                columnNumber: 7
-            }, undefined),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-                className: "captured-pieces",
+                fileName: "src/views/InfoPanel.tsx",
+                lineNumber: 79,
+                columnNumber: 9
+            }, undefined)
+        }, void 0, false, {
+            fileName: "src/views/InfoPanel.tsx",
+            lineNumber: 78,
+            columnNumber: 7
+        }, undefined);
+    };
+    // Determine content for selected piece panel
+    const selectedPiecePanel = ()=>{
+        if (!selectedSquare || !board[selectedSquare.row][selectedSquare.col].piece) return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+            className: "panel-content empty",
+            children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                children: "No piece selected"
+            }, void 0, false, {
+                fileName: "src/views/InfoPanel.tsx",
+                lineNumber: 99,
+                columnNumber: 11
+            }, undefined)
+        }, void 0, false, {
+            fileName: "src/views/InfoPanel.tsx",
+            lineNumber: 98,
+            columnNumber: 9
+        }, undefined);
+        const piece = board[selectedSquare.row][selectedSquare.col].piece;
+        const stateClass = getPieceStateClass(piece);
+        const notation = getPositionNotation(piece.position);
+        // Create an array of piece states
+        const states = [];
+        if (piece.isThreatened) states.push("Threatened");
+        if (piece.isProtected) states.push("Protected");
+        if (piece.isThreatener) states.push("Threatening");
+        if (piece.isProtector) states.push("Protecting");
+        return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+            className: "panel-content",
+            children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                className: "panel-row",
                 children: [
-                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h3", {
-                        children: "Captured Pieces"
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                        className: `piece-indicator ${piece.color} ${piece.type} ${stateClass} selected`,
+                        children: piece.type.charAt(0).toUpperCase()
                     }, void 0, false, {
-                        fileName: "src/views/GameInfo.tsx",
-                        lineNumber: 81,
+                        fileName: "src/views/InfoPanel.tsx",
+                        lineNumber: 118,
+                        columnNumber: 11
+                    }, undefined),
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                        className: "piece-details",
+                        children: [
+                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                                className: "detail-heading",
+                                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
+                                    children: [
+                                        piece.color,
+                                        " ",
+                                        piece.type
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "src/views/InfoPanel.tsx",
+                                    lineNumber: 122,
+                                    columnNumber: 43
+                                }, undefined)
+                            }, void 0, false, {
+                                fileName: "src/views/InfoPanel.tsx",
+                                lineNumber: 122,
+                                columnNumber: 13
+                            }, undefined),
+                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                                children: [
+                                    "Position: ",
+                                    notation
+                                ]
+                            }, void 0, true, {
+                                fileName: "src/views/InfoPanel.tsx",
+                                lineNumber: 123,
+                                columnNumber: 13
+                            }, undefined),
+                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                                children: [
+                                    "Status: ",
+                                    states.length > 0 ? states.join(", ") : "Normal"
+                                ]
+                            }, void 0, true, {
+                                fileName: "src/views/InfoPanel.tsx",
+                                lineNumber: 124,
+                                columnNumber: 13
+                            }, undefined),
+                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                                children: [
+                                    "Moved: ",
+                                    piece.hasMoved ? "Yes" : "No"
+                                ]
+                            }, void 0, true, {
+                                fileName: "src/views/InfoPanel.tsx",
+                                lineNumber: 125,
+                                columnNumber: 13
+                            }, undefined)
+                        ]
+                    }, void 0, true, {
+                        fileName: "src/views/InfoPanel.tsx",
+                        lineNumber: 121,
+                        columnNumber: 11
+                    }, undefined)
+                ]
+            }, void 0, true, {
+                fileName: "src/views/InfoPanel.tsx",
+                lineNumber: 117,
+                columnNumber: 9
+            }, undefined)
+        }, void 0, false, {
+            fileName: "src/views/InfoPanel.tsx",
+            lineNumber: 116,
+            columnNumber: 7
+        }, undefined);
+    };
+    // Determine content for hovered square panel
+    const hoveredSquarePanel = ()=>{
+        if (!hoveredSquare) return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+            className: "square-details-container empty",
+            children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                children: "No square hovered"
+            }, void 0, false, {
+                fileName: "src/views/InfoPanel.tsx",
+                lineNumber: 137,
+                columnNumber: 11
+            }, undefined)
+        }, void 0, false, {
+            fileName: "src/views/InfoPanel.tsx",
+            lineNumber: 136,
+            columnNumber: 9
+        }, undefined);
+        const square = board[hoveredSquare.row][hoveredSquare.col];
+        const notation = getPositionNotation(hoveredSquare);
+        const stateClass = getSquareStateClass(square);
+        return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+            className: "square-details-container",
+            children: [
+                /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                    className: "square-info",
+                    children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                        className: "panel-row",
+                        children: [
+                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                                className: `square-indicator ${stateClass}`,
+                                children: notation
+                            }, void 0, false, {
+                                fileName: "src/views/InfoPanel.tsx",
+                                lineNumber: 150,
+                                columnNumber: 13
+                            }, undefined),
+                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                                className: "square-details",
+                                children: [
+                                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                                        className: "detail-heading",
+                                        children: [
+                                            "Position: ",
+                                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
+                                                children: notation
+                                            }, void 0, false, {
+                                                fileName: "src/views/InfoPanel.tsx",
+                                                lineNumber: 152,
+                                                columnNumber: 55
+                                            }, undefined),
+                                            " (",
+                                            hoveredSquare.row,
+                                            ",",
+                                            hoveredSquare.col,
+                                            ")"
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "src/views/InfoPanel.tsx",
+                                        lineNumber: 152,
+                                        columnNumber: 15
+                                    }, undefined),
+                                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                                        children: [
+                                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                                                className: "label",
+                                                children: "Threats:"
+                                            }, void 0, false, {
+                                                fileName: "src/views/InfoPanel.tsx",
+                                                lineNumber: 154,
+                                                columnNumber: 17
+                                            }, undefined),
+                                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                                                className: "white-count",
+                                                children: [
+                                                    "W: ",
+                                                    square.whiteThreatCount
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "src/views/InfoPanel.tsx",
+                                                lineNumber: 155,
+                                                columnNumber: 17
+                                            }, undefined),
+                                            " |",
+                                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                                                className: "black-count",
+                                                children: [
+                                                    "B: ",
+                                                    square.blackThreatCount
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "src/views/InfoPanel.tsx",
+                                                lineNumber: 156,
+                                                columnNumber: 17
+                                            }, undefined)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "src/views/InfoPanel.tsx",
+                                        lineNumber: 153,
+                                        columnNumber: 15
+                                    }, undefined),
+                                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                                        children: [
+                                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                                                className: "label",
+                                                children: "Contention:"
+                                            }, void 0, false, {
+                                                fileName: "src/views/InfoPanel.tsx",
+                                                lineNumber: 159,
+                                                columnNumber: 17
+                                            }, undefined),
+                                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                                                className: "value",
+                                                children: [
+                                                    "Volume: ",
+                                                    square.contentionVolume
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "src/views/InfoPanel.tsx",
+                                                lineNumber: 160,
+                                                columnNumber: 17
+                                            }, undefined),
+                                            " |",
+                                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                                                className: "value",
+                                                children: [
+                                                    "Ratio: ",
+                                                    formatNumber(square.contentionRatio)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "src/views/InfoPanel.tsx",
+                                                lineNumber: 161,
+                                                columnNumber: 17
+                                            }, undefined)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "src/views/InfoPanel.tsx",
+                                        lineNumber: 158,
+                                        columnNumber: 15
+                                    }, undefined)
+                                ]
+                            }, void 0, true, {
+                                fileName: "src/views/InfoPanel.tsx",
+                                lineNumber: 151,
+                                columnNumber: 13
+                            }, undefined)
+                        ]
+                    }, void 0, true, {
+                        fileName: "src/views/InfoPanel.tsx",
+                        lineNumber: 149,
+                        columnNumber: 11
+                    }, undefined)
+                }, void 0, false, {
+                    fileName: "src/views/InfoPanel.tsx",
+                    lineNumber: 148,
+                    columnNumber: 9
+                }, undefined),
+                /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                    className: "piece-info",
+                    children: [
+                        /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h4", {
+                            children: "STATE DETAILS: CURRENT HOVERED PIECE"
+                        }, void 0, false, {
+                            fileName: "src/views/InfoPanel.tsx",
+                            lineNumber: 168,
+                            columnNumber: 11
+                        }, undefined),
+                        hoveredPiecePanel()
+                    ]
+                }, void 0, true, {
+                    fileName: "src/views/InfoPanel.tsx",
+                    lineNumber: 167,
+                    columnNumber: 9
+                }, undefined)
+            ]
+        }, void 0, true, {
+            fileName: "src/views/InfoPanel.tsx",
+            lineNumber: 147,
+            columnNumber: 7
+        }, undefined);
+    };
+    // Determine content for selected square panel
+    const selectedSquarePanel = ()=>{
+        if (!selectedSquare) return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+            className: "square-details-container empty",
+            children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                children: "No square selected"
+            }, void 0, false, {
+                fileName: "src/views/InfoPanel.tsx",
+                lineNumber: 180,
+                columnNumber: 11
+            }, undefined)
+        }, void 0, false, {
+            fileName: "src/views/InfoPanel.tsx",
+            lineNumber: 179,
+            columnNumber: 9
+        }, undefined);
+        const square = board[selectedSquare.row][selectedSquare.col];
+        const notation = getPositionNotation(selectedSquare);
+        const stateClass = getSquareStateClass(square);
+        return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+            className: "square-details-container",
+            children: [
+                /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                    className: "square-info",
+                    children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                        className: "panel-row",
+                        children: [
+                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                                className: `square-indicator ${stateClass} selected`,
+                                children: notation
+                            }, void 0, false, {
+                                fileName: "src/views/InfoPanel.tsx",
+                                lineNumber: 193,
+                                columnNumber: 13
+                            }, undefined),
+                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                                className: "square-details",
+                                children: [
+                                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                                        className: "detail-heading",
+                                        children: [
+                                            "Position: ",
+                                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("strong", {
+                                                children: notation
+                                            }, void 0, false, {
+                                                fileName: "src/views/InfoPanel.tsx",
+                                                lineNumber: 195,
+                                                columnNumber: 55
+                                            }, undefined),
+                                            " (",
+                                            selectedSquare.row,
+                                            ",",
+                                            selectedSquare.col,
+                                            ")"
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "src/views/InfoPanel.tsx",
+                                        lineNumber: 195,
+                                        columnNumber: 15
+                                    }, undefined),
+                                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                                        children: [
+                                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                                                className: "label",
+                                                children: "Threats:"
+                                            }, void 0, false, {
+                                                fileName: "src/views/InfoPanel.tsx",
+                                                lineNumber: 197,
+                                                columnNumber: 17
+                                            }, undefined),
+                                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                                                className: "white-count",
+                                                children: [
+                                                    "W: ",
+                                                    square.whiteThreatCount
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "src/views/InfoPanel.tsx",
+                                                lineNumber: 198,
+                                                columnNumber: 17
+                                            }, undefined),
+                                            " |",
+                                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                                                className: "black-count",
+                                                children: [
+                                                    "B: ",
+                                                    square.blackThreatCount
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "src/views/InfoPanel.tsx",
+                                                lineNumber: 199,
+                                                columnNumber: 17
+                                            }, undefined)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "src/views/InfoPanel.tsx",
+                                        lineNumber: 196,
+                                        columnNumber: 15
+                                    }, undefined),
+                                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                                        children: [
+                                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                                                className: "label",
+                                                children: "Contention:"
+                                            }, void 0, false, {
+                                                fileName: "src/views/InfoPanel.tsx",
+                                                lineNumber: 202,
+                                                columnNumber: 17
+                                            }, undefined),
+                                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                                                className: "value",
+                                                children: [
+                                                    "Volume: ",
+                                                    square.contentionVolume
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "src/views/InfoPanel.tsx",
+                                                lineNumber: 203,
+                                                columnNumber: 17
+                                            }, undefined),
+                                            " |",
+                                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                                                className: "value",
+                                                children: [
+                                                    "Ratio: ",
+                                                    formatNumber(square.contentionRatio)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "src/views/InfoPanel.tsx",
+                                                lineNumber: 204,
+                                                columnNumber: 17
+                                            }, undefined)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "src/views/InfoPanel.tsx",
+                                        lineNumber: 201,
+                                        columnNumber: 15
+                                    }, undefined),
+                                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                                        children: [
+                                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                                                className: "label",
+                                                children: "Color:"
+                                            }, void 0, false, {
+                                                fileName: "src/views/InfoPanel.tsx",
+                                                lineNumber: 207,
+                                                columnNumber: 17
+                                            }, undefined),
+                                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                                                className: "value",
+                                                children: square.color
+                                            }, void 0, false, {
+                                                fileName: "src/views/InfoPanel.tsx",
+                                                lineNumber: 208,
+                                                columnNumber: 17
+                                            }, undefined)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "src/views/InfoPanel.tsx",
+                                        lineNumber: 206,
+                                        columnNumber: 15
+                                    }, undefined)
+                                ]
+                            }, void 0, true, {
+                                fileName: "src/views/InfoPanel.tsx",
+                                lineNumber: 194,
+                                columnNumber: 13
+                            }, undefined)
+                        ]
+                    }, void 0, true, {
+                        fileName: "src/views/InfoPanel.tsx",
+                        lineNumber: 192,
+                        columnNumber: 11
+                    }, undefined)
+                }, void 0, false, {
+                    fileName: "src/views/InfoPanel.tsx",
+                    lineNumber: 191,
+                    columnNumber: 9
+                }, undefined),
+                /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                    className: "piece-info",
+                    children: [
+                        /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h4", {
+                            children: "STATE DETAILS: CURRENT SELECTED PIECE"
+                        }, void 0, false, {
+                            fileName: "src/views/InfoPanel.tsx",
+                            lineNumber: 215,
+                            columnNumber: 11
+                        }, undefined),
+                        selectedPiecePanel()
+                    ]
+                }, void 0, true, {
+                    fileName: "src/views/InfoPanel.tsx",
+                    lineNumber: 214,
+                    columnNumber: 9
+                }, undefined)
+            ]
+        }, void 0, true, {
+            fileName: "src/views/InfoPanel.tsx",
+            lineNumber: 190,
+            columnNumber: 7
+        }, undefined);
+    };
+    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+        className: "info-panel",
+        children: [
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                className: "info-panel-header",
+                children: [
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h2", {
+                        children: "Board Analysis"
+                    }, void 0, false, {
+                        fileName: "src/views/InfoPanel.tsx",
+                        lineNumber: 225,
                         columnNumber: 9
                     }, undefined),
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-                        className: "captured-pieces-list",
+                        className: "control-buttons",
                         children: [
-                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-                                className: "white-captured",
-                                children: capturedPieces.filter((piece)=>piece.color === (0, _types.PlayerColor).WHITE).map((piece, i)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
-                                        className: "captured-piece",
-                                        children: piece.type.charAt(0).toUpperCase()
-                                    }, `white-captured-${i}`, false, {
-                                        fileName: "src/views/GameInfo.tsx",
-                                        lineNumber: 87,
-                                        columnNumber: 17
-                                    }, undefined))
+                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                                className: "control-button reset-button",
+                                onClick: onResetGame,
+                                children: "New Game"
                             }, void 0, false, {
-                                fileName: "src/views/GameInfo.tsx",
-                                lineNumber: 83,
+                                fileName: "src/views/InfoPanel.tsx",
+                                lineNumber: 227,
                                 columnNumber: 11
                             }, undefined),
-                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-                                className: "black-captured",
-                                children: capturedPieces.filter((piece)=>piece.color === (0, _types.PlayerColor).BLACK).map((piece, i)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
-                                        className: "captured-piece",
-                                        children: piece.type.charAt(0).toUpperCase()
-                                    }, `black-captured-${i}`, false, {
-                                        fileName: "src/views/GameInfo.tsx",
-                                        lineNumber: 96,
-                                        columnNumber: 17
-                                    }, undefined))
-                            }, void 0, false, {
-                                fileName: "src/views/GameInfo.tsx",
-                                lineNumber: 92,
+                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("label", {
+                                className: "toggle-container",
+                                children: [
+                                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                                        children: "Show Threats"
+                                    }, void 0, false, {
+                                        fileName: "src/views/InfoPanel.tsx",
+                                        lineNumber: 231,
+                                        columnNumber: 13
+                                    }, undefined),
+                                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("input", {
+                                        type: "checkbox",
+                                        checked: showThreats,
+                                        onChange: onToggleThreats
+                                    }, void 0, false, {
+                                        fileName: "src/views/InfoPanel.tsx",
+                                        lineNumber: 232,
+                                        columnNumber: 13
+                                    }, undefined),
+                                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                                        className: "toggle-switch"
+                                    }, void 0, false, {
+                                        fileName: "src/views/InfoPanel.tsx",
+                                        lineNumber: 237,
+                                        columnNumber: 13
+                                    }, undefined)
+                                ]
+                            }, void 0, true, {
+                                fileName: "src/views/InfoPanel.tsx",
+                                lineNumber: 230,
                                 columnNumber: 11
                             }, undefined)
                         ]
                     }, void 0, true, {
-                        fileName: "src/views/GameInfo.tsx",
-                        lineNumber: 82,
+                        fileName: "src/views/InfoPanel.tsx",
+                        lineNumber: 226,
                         columnNumber: 9
                     }, undefined)
                 ]
             }, void 0, true, {
-                fileName: "src/views/GameInfo.tsx",
-                lineNumber: 80,
+                fileName: "src/views/InfoPanel.tsx",
+                lineNumber: 224,
                 columnNumber: 7
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-                className: "move-history",
+                className: "info-panel-grid",
                 children: [
-                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h3", {
-                        children: "Move History"
-                    }, void 0, false, {
-                        fileName: "src/views/GameInfo.tsx",
-                        lineNumber: 105,
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                        className: "info-subpanel",
+                        children: [
+                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h3", {
+                                children: "STATE DETAILS: CURRENT HOVERED SQUARE"
+                            }, void 0, false, {
+                                fileName: "src/views/InfoPanel.tsx",
+                                lineNumber: 244,
+                                columnNumber: 11
+                            }, undefined),
+                            hoveredSquarePanel()
+                        ]
+                    }, void 0, true, {
+                        fileName: "src/views/InfoPanel.tsx",
+                        lineNumber: 243,
                         columnNumber: 9
                     }, undefined),
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-                        className: "move-list",
-                        children: moveHistory.map((move, index)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-                                className: "move-item",
-                                children: formatMove(move, index)
-                            }, `move-${index}`, false, {
-                                fileName: "src/views/GameInfo.tsx",
-                                lineNumber: 108,
-                                columnNumber: 13
-                            }, undefined))
-                    }, void 0, false, {
-                        fileName: "src/views/GameInfo.tsx",
-                        lineNumber: 106,
+                        className: "info-subpanel",
+                        children: [
+                            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h3", {
+                                children: "STATE DETAILS: CURRENT SELECTED SQUARE"
+                            }, void 0, false, {
+                                fileName: "src/views/InfoPanel.tsx",
+                                lineNumber: 249,
+                                columnNumber: 11
+                            }, undefined),
+                            selectedSquarePanel()
+                        ]
+                    }, void 0, true, {
+                        fileName: "src/views/InfoPanel.tsx",
+                        lineNumber: 248,
                         columnNumber: 9
                     }, undefined)
                 ]
             }, void 0, true, {
-                fileName: "src/views/GameInfo.tsx",
-                lineNumber: 104,
+                fileName: "src/views/InfoPanel.tsx",
+                lineNumber: 242,
                 columnNumber: 7
             }, undefined)
         ]
     }, void 0, true, {
-        fileName: "src/views/GameInfo.tsx",
-        lineNumber: 66,
+        fileName: "src/views/InfoPanel.tsx",
+        lineNumber: 223,
         columnNumber: 5
     }, undefined);
 };
-_c = GameInfo;
-exports.default = GameInfo;
+_c = InfoPanel;
+exports.default = InfoPanel;
 var _c;
-$RefreshReg$(_c, "GameInfo");
+$RefreshReg$(_c, "InfoPanel");
 
-  $parcel$ReactRefreshHelpers$9e72.postlude(module);
+  $parcel$ReactRefreshHelpers$dd7e.postlude(module);
 } finally {
   globalThis.$RefreshReg$ = prevRefreshReg;
   globalThis.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","../models/types":"hEtH3","./GameInfo.css":"jlAej","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"jlAej":[function() {},{}],"eFg4c":[function() {},{}],"hUfa8":[function(require,module,exports,__globalThis) {
+},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","./InfoPanel.css":"f5FY8","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"f5FY8":[function() {},{}],"hUfa8":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "GameController", ()=>GameController);
@@ -28063,12 +28780,22 @@ class ChessModel {
     }
     // Set up a new game
     setupNewGame() {
-        const board = Array(8).fill(null).map((_, row)=>Array(8).fill(null).map((_, col)=>({
+        const board = Array(8).fill(null).map((_, row)=>Array(8).fill(null).map((_, col)=>{
+                // Calculate file (a-h) and rank (1-8)
+                const file = String.fromCharCode('a'.charCodeAt(0) + col);
+                const rank = 8 - row;
+                // Determine square color (white or black)
+                const color = (row + col) % 2 === 0 ? (0, _types.PlayerColor).BLACK : (0, _types.PlayerColor).WHITE;
+                return {
                     position: {
                         row,
                         col
                     },
+                    file,
+                    rank,
+                    color,
                     piece: null,
+                    hasPiece: false,
                     isLegalMove: false,
                     isSelected: false,
                     isCheck: false,
@@ -28079,8 +28806,11 @@ class ChessModel {
                     isContestedDestination: false,
                     isNeutralDestination: false,
                     whiteThreatCount: 0,
-                    blackThreatCount: 0
-                })));
+                    blackThreatCount: 0,
+                    contentionVolume: 0,
+                    contentionRatio: 0
+                };
+            }));
         // Place the pieces on the board
         this.setupPieces(board);
         return {
@@ -28109,6 +28839,7 @@ class ChessModel {
                 },
                 hasMoved: false
             };
+            board[6][col].hasPiece = true;
             // Black pawns (row 1)
             board[1][col].piece = {
                 id: `black-pawn-${col}`,
@@ -28120,6 +28851,7 @@ class ChessModel {
                 },
                 hasMoved: false
             };
+            board[1][col].hasPiece = true;
         }
         // Set up rooks
         board[7][0].piece = {
@@ -28132,6 +28864,7 @@ class ChessModel {
             },
             hasMoved: false
         };
+        board[7][0].hasPiece = true;
         board[7][7].piece = {
             id: 'white-rook-1',
             type: (0, _types.PieceType).ROOK,
@@ -28142,6 +28875,7 @@ class ChessModel {
             },
             hasMoved: false
         };
+        board[7][7].hasPiece = true;
         board[0][0].piece = {
             id: 'black-rook-0',
             type: (0, _types.PieceType).ROOK,
@@ -28152,6 +28886,7 @@ class ChessModel {
             },
             hasMoved: false
         };
+        board[0][0].hasPiece = true;
         board[0][7].piece = {
             id: 'black-rook-1',
             type: (0, _types.PieceType).ROOK,
@@ -28162,6 +28897,7 @@ class ChessModel {
             },
             hasMoved: false
         };
+        board[0][7].hasPiece = true;
         // Set up knights
         board[7][1].piece = {
             id: 'white-knight-0',
@@ -28173,6 +28909,7 @@ class ChessModel {
             },
             hasMoved: false
         };
+        board[7][1].hasPiece = true;
         board[7][6].piece = {
             id: 'white-knight-1',
             type: (0, _types.PieceType).KNIGHT,
@@ -28183,6 +28920,7 @@ class ChessModel {
             },
             hasMoved: false
         };
+        board[7][6].hasPiece = true;
         board[0][1].piece = {
             id: 'black-knight-0',
             type: (0, _types.PieceType).KNIGHT,
@@ -28193,6 +28931,7 @@ class ChessModel {
             },
             hasMoved: false
         };
+        board[0][1].hasPiece = true;
         board[0][6].piece = {
             id: 'black-knight-1',
             type: (0, _types.PieceType).KNIGHT,
@@ -28203,6 +28942,7 @@ class ChessModel {
             },
             hasMoved: false
         };
+        board[0][6].hasPiece = true;
         // Set up bishops
         board[7][2].piece = {
             id: 'white-bishop-0',
@@ -28214,6 +28954,7 @@ class ChessModel {
             },
             hasMoved: false
         };
+        board[7][2].hasPiece = true;
         board[7][5].piece = {
             id: 'white-bishop-1',
             type: (0, _types.PieceType).BISHOP,
@@ -28224,6 +28965,7 @@ class ChessModel {
             },
             hasMoved: false
         };
+        board[7][5].hasPiece = true;
         board[0][2].piece = {
             id: 'black-bishop-0',
             type: (0, _types.PieceType).BISHOP,
@@ -28234,6 +28976,7 @@ class ChessModel {
             },
             hasMoved: false
         };
+        board[0][2].hasPiece = true;
         board[0][5].piece = {
             id: 'black-bishop-1',
             type: (0, _types.PieceType).BISHOP,
@@ -28244,6 +28987,7 @@ class ChessModel {
             },
             hasMoved: false
         };
+        board[0][5].hasPiece = true;
         // Set up queens
         board[7][3].piece = {
             id: 'white-queen',
@@ -28255,6 +28999,7 @@ class ChessModel {
             },
             hasMoved: false
         };
+        board[7][3].hasPiece = true;
         board[0][3].piece = {
             id: 'black-queen',
             type: (0, _types.PieceType).QUEEN,
@@ -28265,6 +29010,7 @@ class ChessModel {
             },
             hasMoved: false
         };
+        board[0][3].hasPiece = true;
         // Set up kings
         board[7][4].piece = {
             id: 'white-king',
@@ -28276,6 +29022,7 @@ class ChessModel {
             },
             hasMoved: false
         };
+        board[7][4].hasPiece = true;
         board[0][4].piece = {
             id: 'black-king',
             type: (0, _types.PieceType).KING,
@@ -28286,6 +29033,7 @@ class ChessModel {
             },
             hasMoved: false
         };
+        board[0][4].hasPiece = true;
     }
     // Select a piece
     selectPiece(position) {
@@ -28445,7 +29193,9 @@ class ChessModel {
                 };
                 rook.hasMoved = true;
                 this.gameState.board[from.row][rookCol].piece = null;
+                this.gameState.board[from.row][rookCol].hasPiece = false;
                 this.gameState.board[from.row][rookToCol].piece = rook;
+                this.gameState.board[from.row][rookToCol].hasPiece = true;
             }
         }
         // Handle en passant
@@ -28464,6 +29214,7 @@ class ChessModel {
                     ...enPassantPiece
                 });
                 this.gameState.board[captureRow][captureCol].piece = null;
+                this.gameState.board[captureRow][captureCol].hasPiece = false;
             }
         }
         // Handle pawn promotion at the end ranks
@@ -28475,11 +29226,13 @@ class ChessModel {
         }
         // Update the board
         this.gameState.board[from.row][from.col].piece = null;
+        this.gameState.board[from.row][from.col].hasPiece = false;
         selectedPiece.position = {
             ...to
         };
         selectedPiece.hasMoved = true;
         this.gameState.board[to.row][to.col].piece = selectedPiece;
+        this.gameState.board[to.row][to.col].hasPiece = true;
         // Add the move to history
         this.gameState.moveHistory.push(move);
         // Switch the current player
@@ -28928,6 +29681,15 @@ class ChessModel {
                 }
             }
         }
+        // Calculate contentionVolume and contentionRatio for each square
+        for(let row = 0; row < 8; row++)for(let col = 0; col < 8; col++){
+            const square = board[row][col];
+            // Calculate contentionVolume - total threats from both sides
+            square.contentionVolume = square.whiteThreatCount + square.blackThreatCount;
+            // Calculate contentionRatio - balance of control
+            if (square.contentionVolume === 0) square.contentionRatio = 0; // No contention
+            else square.contentionRatio = (square.whiteThreatCount - square.blackThreatCount) / square.contentionVolume;
+        }
         // Store the threateners map in the game state for use when hovering
         this.squareThreatenersMap = squareThreatenersMap;
     }
@@ -29126,6 +29888,6 @@ class ChessModel {
     }
 }
 
-},{"./types":"hEtH3","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}]},["7KwkS","4dmnR"], "4dmnR", "parcelRequired8a0", {}, null, null, "http://localhost:1234")
+},{"./types":"hEtH3","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"cBIeL":[function() {},{}]},["7KwkS","4dmnR"], "4dmnR", "parcelRequired8a0", {}, null, null, "http://localhost:1234")
 
 //# sourceMappingURL=force_chess.6efbc4f8.js.map
